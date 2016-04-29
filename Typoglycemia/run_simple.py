@@ -11,7 +11,7 @@ sample_input = ("According to a research team at Cambridge University, "
 
 def typoword(s):
     """Takes a string and 'typoglycemates' it."""
-    match = re.match(r"(.+)([\s" + punctuation + "])(.+)", s)
+    match = re.match(r"(.+)([\s" + punctuation + "])(.*)", s)
     if match:
         return typoword(match.group(1)) + match.group(2) + typoword(match.group(3))
     elif (len(s) > 2):
