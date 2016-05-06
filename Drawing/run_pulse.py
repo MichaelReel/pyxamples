@@ -9,7 +9,7 @@ tps = 10
 pygame.init()
 
 screen = pygame.display.set_mode(size)
-pygame.display.set_caption("Pygame Line Draw Example")
+pygame.display.set_caption("Pygame Screen Fill Example")
 
 done = False
 clock = pygame.time.Clock()
