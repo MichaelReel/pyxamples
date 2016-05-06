@@ -6,6 +6,8 @@ from pygame.locals import *
 size = [400, 300]
 tps = 10
 
+lastTime = pygame.time.get_ticks()
+frameTime = 1000 / 30           # milliseconds per frame
 pygame.init()
 
 screen = pygame.display.set_mode(size)
@@ -44,8 +46,10 @@ while not done:
     if pos[0] >= size[0] and pos[1] >= size[1]:
         done=True
     
-    # Finally update the screen
-    pygame.display.flip()
+    if (pygame.time.get_ticks() > lastTime + frameTime):
+        # Finally update the screen
+        pygame.display.flip()
+        lastTime += frameTime
     
 # Done
 pygame.quit()
