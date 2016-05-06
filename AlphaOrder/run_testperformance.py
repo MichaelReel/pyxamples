@@ -9,12 +9,12 @@ import singlelistcomp
 testFile = 'words.txt'
 
 functionCalls = [ 
-	    oneline.alphorder, 
-		failfast.alphorder, 
-		listcomps.alphorder, 
-		singlelistcomp.alphorder, 
-	]
-	
+        oneline.alphorder, 
+        failfast.alphorder, 
+        listcomps.alphorder, 
+        singlelistcomp.alphorder, 
+    ]
+
 result = collections.namedtuple('Results', ['ordered', 'reversed', 'unordered'])
 
 def findOrderedWords(fun, filename):
