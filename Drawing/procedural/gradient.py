@@ -1,0 +1,17 @@
+from globals import *
+
+class Gradient:
+    """A simple red + blue = magenta gradient class"""
+    
+    def __init__(self, (width, height)):
+        self.dx = float(max) / width
+        self.dy = float(max) / height
+    
+    def getColour(self, (x, y)):
+        """Return a colour."""
+        colour = [0,0,0]
+        
+        colour[0] = int(x * self.dx)
+        colour[2] = int (y * self.dy)
+            
+        return colour
