@@ -1,9 +1,9 @@
 import pygame
-from procedural import rand, gradient, knuth, jenkins
+from procedural import rand, gradient, knuth, jenkins, wang, builtin
 from pygame.locals import *
 
 # Define the screen dimensions
-size = [400, 300]
+size = [800, 600]
 tps = 10
 
 lastTime = pygame.time.get_ticks()
@@ -15,10 +15,15 @@ pygame.display.set_caption("Pygame Pixel Draw Example")
 
 done = False
 
-#generator = rand.RandomColour()
-#generator = gradient.Gradient(size)
-#generator = knuth.Multiplactive(size)
-generator = jenkins.Mix96(size)
+# generator = rand.RandomColour()
+# generator = gradient.Gradient(size)
+# generator = knuth.Multiplactive(size)
+# generator = jenkins.Mix96(size)
+# generator = wang.Mix32Bit(size)
+# generator = jenkins.Mix32Bit(size)
+# generator = wang.MultiplicationHash(size)
+# generator = wang.Mix64Bit(size)
+generator = builtin.Hashing(size)
 
 pos = [0, 0]
 colour = [0, 0, 0]
