@@ -1,9 +1,9 @@
 import pygame
-from procedural import rand, gradient, knuth, jenkins, wang, builtin
+from procedural import rand, gradient, knuth, jenkins, wang, builtin, perlin
 from pygame.locals import *
 
 # Define the screen dimensions
-size = [800, 600]
+size = [400, 300]
 tps = 10
 
 lastTime = pygame.time.get_ticks()
@@ -23,7 +23,8 @@ done = False
 # generator = jenkins.Mix32Bit(size)
 # generator = wang.MultiplicationHash(size)
 # generator = wang.Mix64Bit(size)
-generator = builtin.Hashing(size)
+# generator = builtin.Hashing(size, "salt")
+generator = perlin.Linear(size, builtin.Hashing(size, "salt"), 8, 0.5)
 
 pos = [0, 0]
 colour = [0, 0, 0]
@@ -36,17 +37,21 @@ while not done:
         if event.type == pygame.QUIT:
             done=True
     
-    # Get a random color
-    colour = generator.getColour(pos)
-    
-    # Draw the next pixel
-    screen.set_at(pos, colour)
-    
-    # increment x / y
-    pos[0] += 1
-    if pos[0] >= size[0]:
-        pos[0] = 0
-        pos[1] += 1
+    # Only calculate cells until there aren't any more to calculate
+    if pos[1] < size[1]:
+        # Get a random color
+        colour = generator.getColour(pos)
+        
+        # print colour, pos
+        
+        # Draw the next pixel
+        screen.set_at(pos, colour)
+        
+        # increment x / y
+        pos[0] += 1
+        if pos[0] >= size[0]:
+            pos[0] = 0
+            pos[1] += 1
     
     # Update the screen only on tick (not every update)
     if (pygame.time.get_ticks() > lastTime + frameTime):
