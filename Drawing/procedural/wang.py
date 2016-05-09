@@ -15,9 +15,9 @@ class Mix32Bit:
         
         wangs = hash32Shift(x + (y * self.width))
         
-        colour[0] = wangs & max
-        colour[1] = (wangs >> 8) & max
-        colour[2] = (wangs >> 16) & max
+        colour[0] = wangs & max_colour
+        colour[1] = (wangs >> 8) & max_colour
+        colour[2] = (wangs >> 16) & max_colour
             
         return colour
 
@@ -34,9 +34,9 @@ class MultiplicationHash:
             
         wangs = hash32ShiftMulti(x + (y * self.width))
         
-        colour[0] = wangs & max
-        colour[1] = (wangs >> 8) & max
-        colour[2] = (wangs >> 16) & max
+        colour[0] = wangs & max_colour
+        colour[1] = (wangs >> 8) & max_colour
+        colour[2] = (wangs >> 16) & max_colour
             
         return colour
     
@@ -54,9 +54,9 @@ class Mix64Bit:
         
         wangs = hash64Shift(long(x) + (long(y) * self.width))
         
-        colour[0] = wangs & max
-        colour[1] = (wangs >> 8) & max
-        colour[2] = (wangs >> 16) & max
+        colour[0] = wangs & max_colour
+        colour[1] = (wangs >> 8) & max_colour
+        colour[2] = (wangs >> 16) & max_colour
             
         return colour
 

@@ -13,6 +13,8 @@ class Linear:
         self.hashgen = hashgen
         self.octives = octives
         self.persist = persist
+        self.min_hash = 0.0
+        self.max_hash = 0.0
     
     def getColour(self, (x, y)):
         """Return a colour."""
@@ -21,7 +23,10 @@ class Linear:
         # hash_val = self.smoothNoise(x, y)
         hash_val = self.perlinNoise(x, y)
         
-        grey = int(max * (0.5 + float(hash_val) / (2 * sys.maxint)))
+        self.min_hash = min(hash_val, self.min_hash)
+        self.max_hash = max(hash_val, self.max_hash)
+        
+        grey = int(max_colour * (0.5 + float(hash_val) / (2 * sys.maxint)))
         for i in range(len(colour)):
             colour[i] = grey
         

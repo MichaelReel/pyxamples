@@ -14,8 +14,8 @@ class Multiplactive:
         
         knuth = (y * self.width + x) * self.ratio
         
-        colour[0] = knuth & max
-        colour[1] = (knuth >> 8) & max
-        colour[2] = (knuth >> 16) & max
+        colour[0] = knuth & max_colour
+        colour[1] = (knuth >> 8) & max_colour
+        colour[2] = (knuth >> 16) & max_colour
             
         return colour

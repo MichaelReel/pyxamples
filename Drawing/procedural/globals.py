@@ -1,6 +1,6 @@
 # Colour minimum and maximum values
-min = 0
-max = 255
+min_colour = 0
+max_colour = 255
 
 # Standard bit shifting functions
 # really just to differentiate logical and arithmetic right shift

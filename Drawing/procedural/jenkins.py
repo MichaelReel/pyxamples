@@ -15,9 +15,9 @@ class Mix96:
         
         jenkins = mix(x, y, 0)
         
-        colour[0] = jenkins & max
-        colour[1] = (jenkins >> 8) & max
-        colour[2] = (jenkins >> 16) & max
+        colour[0] = jenkins & max_colour
+        colour[1] = (jenkins >> 8) & max_colour
+        colour[2] = (jenkins >> 16) & max_colour
             
         return colour
     
@@ -34,9 +34,9 @@ class Mix32Bit:
             
         jenkins = mix32Bit(x + (y * self.width))
         
-        colour[0] = jenkins & max
-        colour[1] = (jenkins >> 8) & max
-        colour[2] = (jenkins >> 16) & max
+        colour[0] = jenkins & max_colour
+        colour[1] = (jenkins >> 8) & max_colour
+        colour[2] = (jenkins >> 16) & max_colour
             
         return colour
     
