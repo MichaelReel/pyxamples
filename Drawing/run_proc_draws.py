@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, sys, os
 from procedural import rand, gradient, knuth, jenkins, wang, builtin, perlin
 from pygame.locals import *
 
@@ -34,18 +34,27 @@ generator = perlin.Linear(gridSize, md5hash, 2, 0.485)
 
 pos = [0, 0]
 colour = [0, 0, 0]
+
 screen.fill(colour)
-    
+
 while not done:
-    
     # Set the loop to done on the close event
-    for event in pygame.event.get():
+    events = pygame.event.get()
+    for event in events:
         if event.type == pygame.QUIT:
-            print "md5hash: {} -> {}".format(md5hash.min_hash, md5hash.max_hash)
-            print "perlin:  {} -> {}".format(generator.min_hash, generator.max_hash)
-            print "{}".format(sys.maxint)
             done=True
-    
+        elif event.type == pygame.KEYUP:
+            # Parse key inputs
+            if event.key == pygame.K_F1:
+                print "md5hash: {} -> {}".format(md5hash.min_hash, md5hash.max_hash)
+                print "perlin:  {} -> {}".format(generator.min_hash, generator.max_hash)
+                print "{}".format(sys.maxint)
+            elif event.key == pygame.K_F2:
+                scriptPath = os.path.dirname(os.path.realpath(__file__))
+                filePath = scriptPath + "/TESTSAVE.png"
+                print "save to {}".format(filePath)
+                pygame.image.save(screen, filePath)
+            
     # Only calculate cells until there aren't any more to calculate
     if pos[1] < gridSize[1]:
         # Get a random color
@@ -64,6 +73,7 @@ while not done:
     # Update the screen only on tick (not every update)
     if (pygame.time.get_ticks() > lastTime + frameTime):
         # Finally update the screen
+        sys.stdout.flush()
         pygame.display.flip()
         lastTime += frameTime
     
