@@ -10,6 +10,6 @@ class RandomColour:
         
         # Get a random color
         for i in range(len(colour)):
-            colour[i] = random.randint(min, max)
+            colour[i] = random.randint(min_colour, max_colour)
             
         return colour

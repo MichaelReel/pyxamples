@@ -4,8 +4,8 @@ class Gradient:
     """A simple red + blue = magenta gradient class"""
     
     def __init__(self, (width, height)):
-        self.dx = float(max) / width
-        self.dy = float(max) / height
+        self.dx = float(max_colour) / width
+        self.dy = float(max_colour) / height
     
     def getColour(self, (x, y)):
         """Return a colour."""

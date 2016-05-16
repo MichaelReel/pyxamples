@@ -8,6 +8,8 @@ class Hashing:
         self.width = width
         self.height = height
         self.salt = salt
+        self.min_hash = 0.0
+        self.max_hash = 0.0
     
     def getColour(self, (x, y)):
         """Return a colour."""
@@ -15,7 +17,7 @@ class Hashing:
         
         hash_v = self.getHash(x, y)
         
-        grey = int(max * (0.5 + float(hash_v) / (2 * sys.maxint)))
+        grey = int(max_colour * (0.5 + float(hash_v) / (2 * sys.maxint)))
         for i in range(len(colour)):
             colour[i] = grey
             
@@ -28,4 +30,9 @@ class Hashing:
         h.update(str(self.salt))
         h.update(str(x + (y * self.width)))
         
-        return hash(h.digest())
+        hash_v = hash(h.digest())
+
+        self.min_hash = min(hash_v, self.min_hash)
+        self.max_hash = max(hash_v, self.max_hash)
+        
+        return hash_v
