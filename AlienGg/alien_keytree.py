@@ -1,10 +1,13 @@
 import random
 
 class Tree():
-    def __init__(self):
+    def __init__(self, key=""):
         self.g = None
         self.G = None
         self.code = None
+        list_key = key.split(' ')
+        for k, v in zip(list_key[1::2], list_key[::2]):
+            self.addKey(k, v)
         
     def __str__(self):
         left = self.g if self.g else ""
@@ -15,13 +18,13 @@ class Tree():
     def str_tree(self, prefix=""):
         result = ""
         if self.g:
-            result += self.g.str_tree(prefix + "   |") + "\n"
+            result += self.g.str_tree(prefix + "   /") + "\n"
             result += prefix + " g:/\n"
         if self.code:
             result += (prefix + "<" + self.code + ">") + ("\n" if self.G else "")
         if self.G:
             result += prefix + " G:\\"
-            result += "\n" + self.G.str_tree(prefix + "   |")
+            result += "\n" + self.G.str_tree(prefix + "   \\")
         return result
         
     def addKey(self, gs, eng):
@@ -61,10 +64,33 @@ class Tree():
             else:
                 self.G.pushKey(letter)
                 
-    def printKeys(self, precode=""):
+    def getPrintKeys(self, precode=""):
+        printKey = ""
         if self.g:
-            self.g.printKeys(precode + 'g')
+            printKey += self.g.getPrintKeys(precode + 'g')
         if self.code:
-            print self.code + " " + precode + " "
+            printKey += self.code + " " + precode + " "
         if self.G:
-            self.G.printKeys(precode + 'G')
+            printKey += self.G.getPrintKeys(precode + 'G')
+        return printKey
+    
+    def encode(self, plain_str):
+        # create a map table
+        list_key = self.getPrintKeys().split()
+        trans_table = {}
+        for k, v in zip(list_key[1::2], list_key[::2]):
+            trans_table[v] = k
+        encoded_str = ""
+        for i in plain_str:
+            encoded_str += trans_table[i] if i in trans_table else i
+        return encoded_str
+    
+    def decode(self, subject):
+        gs = subject
+        translation = ""
+        while gs:
+            res = self.nextKey(gs)
+            gs = gs[len(res[0]):]
+            translation += res[1]
+        return translation
+    

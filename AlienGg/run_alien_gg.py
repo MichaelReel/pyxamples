@@ -10,22 +10,11 @@ pbreen_key = "D GgggGgg p gGGg d GgggGGg y gGg o GGggG h ggGgG i GGgGg a GgggGgG
 pbreen_test = "GgggGggGgggGgGGgggGGgGgggGGggGg GGggGGggG GgGggGgGGGgGggGGgGgggGGG?"
 
 def decode(key, subject):
-    root = Tree()
-    list_key = key.split(' ')
-    for k, v in zip(list_key[1::2], list_key[::2]):
-        root.addKey(k, v)
-    # print root
-    print root.str_tree()
-    
-    gs = subject
-    translation = ''
-    while gs:
-        res = root.nextKey(gs)
-        gs = gs[len(res[0]):]
-        translation += res[1]
-        
+    root = Tree(key)
+    # print root.str_tree()
+    translation = root.decode(subject)
     print translation
         
 decode(hw_key, hw_test)
-# decode(real_key, real_test)
-# decode(pbreen_key, pbreen_test)
+decode(real_key, real_test)
+decode(pbreen_key, pbreen_test)
