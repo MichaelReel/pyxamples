@@ -4,15 +4,15 @@ outputFormat = "%Y-%m-%d"
 
 acceptedUSDateFormats = [
         "%Y-%m-%d", 
-		"%Y %m %d", 
-		"%Y/%m/%d", 
-		"%m-%d-%Y", 
-		"%m %d %Y", 
-		"%m/%d/%Y",
-		"%m-%d-%y", 
-		"%m %d %y", 
-		"%m/%d/%y", 
-	]
+        "%Y %m %d", 
+        "%Y/%m/%d", 
+        "%m-%d-%Y", 
+        "%m %d %Y", 
+        "%m/%d/%Y",
+        "%m-%d-%y", 
+        "%m %d %y", 
+        "%m/%d/%y", 
+    ]
 
 def getISODate(usDate):
     """Return a date in the format y-m-d when given in a random US style date format"""

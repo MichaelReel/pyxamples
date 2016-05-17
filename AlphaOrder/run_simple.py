@@ -5,7 +5,7 @@ def alphorder(s):
         print s, "REVERSE ORDER"
     else:
         print s, "NOT IN ORDER"
-		
+
 alphorder("billowy")
 alphorder("biopsy")
 alphorder("chinos")
