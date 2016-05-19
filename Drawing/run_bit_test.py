@@ -1,10 +1,23 @@
-from procedural.builtin import Hashing
-from procedural.rand import RandomColour
+from procedural import rand, gradient, knuth, jenkins, wang, builtin, perlin, perlin_ref
 
 width = 200
 height = 200
-generator = Hashing((width, height), "salt")
-# generator = RandomColour()
+
+gridSize = (width, height)
+
+# generator = rand.RandomColour()
+# generator = gradient.Gradient(gridSize)
+# generator = knuth.Multiplactive(gridSize)
+# generator = jenkins.Mix96(gridSize)
+# generator = wang.Mix32Bit(gridSize)
+generator = jenkins.Mix32Bit(gridSize)
+# generator = wang.MultiplicationHash(gridSize)
+# generator = wang.Mix64Bit(gridSize)
+# md5hash = builtin.Hashing(gridSize, "salt")
+# generator = md5hash
+# generator = perlin.Linear(gridSize, md5hash, 4, 0.485)
+# generator = perlin_ref.PerlinRef(gridSize)
+
 bits = 32
 
 bits_used = [0] * bits

@@ -13,13 +13,16 @@ class Mix96:
         """Return a colour."""
         colour = [0,0,0]
         
-        jenkins = mix(x, y, 0)
+        jenkins = self.getHash(x, y)
         
         colour[0] = jenkins & max_colour
         colour[1] = (jenkins >> 8) & max_colour
         colour[2] = (jenkins >> 16) & max_colour
             
         return colour
+    
+    def getHash(self, x, y):
+        return mix(x, y, 0)
     
 class Mix32Bit:
     """Robert Jenkins' 32 Bit Integer hash function"""
@@ -32,13 +35,16 @@ class Mix32Bit:
         """Return a colour."""
         colour = [0,0,0]
             
-        jenkins = mix32Bit(x + (y * self.width))
+        jenkins = self.getHash(x, y)
         
         colour[0] = jenkins & max_colour
         colour[1] = (jenkins >> 8) & max_colour
         colour[2] = (jenkins >> 16) & max_colour
             
         return colour
+    
+    def getHash(self, x, y):
+        return mix32Bit(x + (y * self.width))
     
 def mix(a, b, c):
     a=a-b;  a=a-c;  a=a^rshift_log(c, 13)
