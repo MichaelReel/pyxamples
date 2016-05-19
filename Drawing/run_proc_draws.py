@@ -1,5 +1,5 @@
 import pygame, sys, os
-from procedural import rand, gradient, knuth, jenkins, wang, builtin, perlin
+from procedural import rand, gradient, knuth, jenkins, wang, builtin, perlin, perlin_ref
 from pygame.locals import *
 
 # Define the screen dimensions
@@ -28,9 +28,10 @@ done = False
 # generator = jenkins.Mix32Bit(gridSize)
 # generator = wang.MultiplicationHash(gridSize)
 # generator = wang.Mix64Bit(gridSize)
-md5hash = builtin.Hashing(gridSize, "salt")
+# md5hash = builtin.Hashing(gridSize, "salt")
 # generator = md5hash
-generator = perlin.Linear(gridSize, md5hash, 2, 0.485)
+# generator = perlin.Linear(gridSize, md5hash, 4, 0.485)
+generator = perlin_ref.PerlinRef(gridSize)
 
 pos = [0, 0]
 colour = [0, 0, 0]
@@ -46,7 +47,7 @@ while not done:
         elif event.type == pygame.KEYUP:
             # Parse key inputs
             if event.key == pygame.K_F1:
-                print "md5hash: {} -> {}".format(md5hash.min_hash, md5hash.max_hash)
+                # print "md5hash: {} -> {}".format(md5hash.min_hash, md5hash.max_hash)
                 print "perlin:  {} -> {}".format(generator.min_hash, generator.max_hash)
                 print "{}".format(sys.maxint)
             elif event.key == pygame.K_F2:
@@ -61,8 +62,14 @@ while not done:
         colour = generator.getColour(pos)
         
         # Draw the next pixel
-        screen.fill(colour, rect=(
-            pos[0] * pixelSize[0], pos[1] * pixelSize[1], pixelSize[0], pixelSize[1]))
+        try:
+            screen.fill(colour, rect=(
+                pos[0] * pixelSize[0], pos[1] * pixelSize[1], pixelSize[0], pixelSize[1]))
+        except TypeError:
+            # Report error on STDOUT and colour errored pixel magenta
+            print "colour: {}, pos: {}, ERROR: {}".format(colour, pos, TypeError)
+            screen.fill((255,0,255), rect=(
+                pos[0] * pixelSize[0], pos[1] * pixelSize[1], pixelSize[0], pixelSize[1]))
         
         # increment x / y
         pos[0] += 1
