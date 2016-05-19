@@ -1,4 +1,4 @@
-import random
+import random, sys
 from globals import *
 
 class RandomColour:
@@ -13,3 +13,7 @@ class RandomColour:
             colour[i] = random.randint(min_colour, max_colour)
             
         return colour
+    
+    def getHash(self, x, y):
+        """Return a random value, we don't care about position."""
+        return random.randint(-sys.maxint-1, sys.maxint)
