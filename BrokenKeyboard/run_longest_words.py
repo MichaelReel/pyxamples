@@ -10,10 +10,10 @@ def getLongestWords(inputStr, dictFile):
     outputArr = ["" for x in range(int(inputArr.pop(0)))]
     
     with open(dictFile) as df:
-        for word in df.readlines():
+        for word in df:
             word = word.strip()
             for k in range(len(inputArr)):
-                if set(word).issubset(set(inputArr[k])) and (len(outputArr[k]) < len(word)):
+                if set(word).issubset(inputArr[k]) and len(outputArr[k]) < len(word):
                     outputArr[k] = word
     
     for k in range(len(inputArr)):
