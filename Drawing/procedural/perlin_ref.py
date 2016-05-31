@@ -1,6 +1,7 @@
 from math import floor
 from globals import *
 from sys import maxint
+import random
 
 # Lifted from: http://mrl.nyu.edu/~perlin/noise/
 
@@ -12,7 +13,12 @@ class PerlinRef(object):
         self.max_hash = 0.0
         self.dx = float(zoom) / width
         self.dy = float(zoom) / height
-        permutation = [
+        permutation = self.getPermutation()
+        for i in range(512):
+            self.p.append(permutation[i % len(permutation)])
+            
+    def getPermutation(self):
+        return [
             151,160,137, 91, 90, 15,131, 13,201, 95, 96, 53,194,233,  7,225,
             140, 36,103, 30, 69,142,  8, 99, 37,240, 21, 10, 23,190,  6,148,
             247,120,234, 75,  0, 26,197, 62, 94,252,219,203,117, 35, 11, 32,
@@ -30,8 +36,6 @@ class PerlinRef(object):
             184, 84,204,176,115,121, 50, 45,127,  4,150,254,138,236,205, 93,
             222,114, 67, 29, 24, 72,243,141,128,195, 78, 66,215, 61,156,180,
         ]
-        for i in range(512):
-            self.p.append(permutation[i % len(permutation)])
     
     def getFloatHash(self, x, y, z = 0):
         X = int(floor(x)) & 255             # FIND UNIT CUBE THAT
@@ -72,16 +76,36 @@ class PerlinRef(object):
         for i in range(len(colour)):
             colour[i] = grey
         
-        # hash_val = self.getHash(x, y)
-        # 
-        # colour[0] = hash_val & max_colour
-        # colour[1] = (hash_val >> 8) & max_colour
-        # colour[2] = (hash_val >> 16) & max_colour
-        
         return colour
     
     def getHash(self, x, y):
         return int(maxint * float(self.getFloatHash(x * self.dx, y * self.dy)))
+        
+class SeededPerlinRef(PerlinRef):
+    def __init__(self, (width, height), seed, zoom = 10.0):
+        self.rand = random.Random(seed)
+        super(SeededPerlinRef, self).__init__((width, height), zoom)
+        
+    def getPermutation(self):
+        permutation = super(SeededPerlinRef, self).getPermutation()
+        return self.rand.sample(permutation, len(permutation))
+    
+class ColourPerlin(object):
+    def __init__(self, (width, height), seed, zoom = (10.0, 10.0, 10.0)):
+        random.seed(seed)
+        self.rd = SeededPerlinRef((width, height), random.random(), zoom[0])
+        self.gn = SeededPerlinRef((width, height), random.random(), zoom[1])
+        self.be = SeededPerlinRef((width, height), random.random(), zoom[2])
+        
+    def getColour(self, (x, y)):
+        """Return a colour."""
+        colour = [0,0,0]
+                
+        colour[0] = self.rd.getColour((x, y))[0]
+        colour[1] = self.gn.getColour((x, y))[1]
+        colour[2] = self.be.getColour((x, y))[2]
+        
+        return colour
         
 def fade(t):
     return t * t * t * (t * (t * 6 - 15) + 10)
@@ -94,5 +118,3 @@ def grad(hsh, x, y, z):
     u = x if h<8 else y                # INTO 12 GRADIENT DIRECTIONS.
     v = y if h<4 else x if h==12 or h==14 else z
     return (u if (h&1) == 0 else -u) + (v if (h&2) == 0 else -v)
-   
-    

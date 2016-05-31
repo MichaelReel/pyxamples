@@ -3,8 +3,8 @@ from procedural import rand, gradient, knuth, jenkins, wang, builtin, perlin, pe
 from pygame.locals import *
 
 # Define the screen dimensions
-pixelSize = [2, 2]
-gridSize = [200, 150]
+pixelSize = [1, 1]
+gridSize = [400, 300]
 displaySize = [gridSize[0] * pixelSize[0], gridSize[1] * pixelSize[1]]
 
 print "disp: {}, grid: {}".format(displaySize, gridSize)
@@ -31,7 +31,9 @@ done = False
 # md5hash = builtin.Hashing(gridSize, "salt")
 # generator = md5hash
 # generator = perlin.Linear(gridSize, md5hash, 4, 0.485)
-generator = perlin_ref.PerlinRef(gridSize)
+# generator = perlin_ref.PerlinRef(gridSize)
+# generator = perlin_ref.SeededPerlinRef(gridSize, "seed")
+generator = perlin_ref.ColourPerlin(gridSize, "mlem", (11, 13, 17))
 
 pos = [0, 0]
 colour = [0, 0, 0]
