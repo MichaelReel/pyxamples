@@ -56,3 +56,7 @@ class Linear:
             total = total + self.smoothNoise(float(x) * frequency, float(y) * frequency) * amplitude
             
         return total
+    
+    def getHash(self, x, y):
+        return int(self.perlinNoise(x, y))
+        

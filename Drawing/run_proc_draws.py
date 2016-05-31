@@ -3,8 +3,8 @@ from procedural import rand, gradient, knuth, jenkins, wang, builtin, perlin, pe
 from pygame.locals import *
 
 # Define the screen dimensions
-pixelSize = [4, 4]
-gridSize = [100, 75]
+pixelSize = [2, 2]
+gridSize = [200, 150]
 displaySize = [gridSize[0] * pixelSize[0], gridSize[1] * pixelSize[1]]
 
 print "disp: {}, grid: {}".format(displaySize, gridSize)

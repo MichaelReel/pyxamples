@@ -10,13 +10,13 @@ gridSize = (width, height)
 # generator = knuth.Multiplactive(gridSize)
 # generator = jenkins.Mix96(gridSize)
 # generator = wang.Mix32Bit(gridSize)
-generator = jenkins.Mix32Bit(gridSize)
+# generator = jenkins.Mix32Bit(gridSize)
 # generator = wang.MultiplicationHash(gridSize)
 # generator = wang.Mix64Bit(gridSize)
-# md5hash = builtin.Hashing(gridSize, "salt")
+# md5hash = builtin.Hashing(gridSize, "mhlem")
 # generator = md5hash
 # generator = perlin.Linear(gridSize, md5hash, 4, 0.485)
-# generator = perlin_ref.PerlinRef(gridSize)
+generator = perlin_ref.PerlinRef(gridSize)
 
 bits = 32
 
@@ -29,3 +29,4 @@ for x,y in [(x,y) for x in range(width) for y in range(height)]:
     print "{{0:0{0:d}b}} : {{0:d}}".format(bits).format(hsh)
         
 print bits_used
+print "spread: {}".format(max(bits_used) - min(bits_used))

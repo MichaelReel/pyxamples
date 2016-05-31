@@ -1,16 +1,17 @@
 from math import floor
 from globals import *
+from sys import maxint
 
 # Lifted from: http://mrl.nyu.edu/~perlin/noise/
 
 class PerlinRef(object):
 
-    def __init__(self, (width, height)):
+    def __init__(self, (width, height), zoom = 10.0):
         self.p = []
         self.min_hash = 0.0
         self.max_hash = 0.0
-        self.dx = 10.0 / width
-        self.dy = 10.0 / height
+        self.dx = float(zoom) / width
+        self.dy = float(zoom) / height
         permutation = [
             151,160,137, 91, 90, 15,131, 13,201, 95, 96, 53,194,233,  7,225,
             140, 36,103, 30, 69,142,  8, 99, 37,240, 21, 10, 23,190,  6,148,
@@ -32,7 +33,7 @@ class PerlinRef(object):
         for i in range(512):
             self.p.append(permutation[i % len(permutation)])
     
-    def getHash(self, x, y, z = 0):
+    def getFloatHash(self, x, y, z = 0):
         X = int(floor(x)) & 255             # FIND UNIT CUBE THAT
         Y = int(floor(y)) & 255             # CONTAINS POINT.
         Z = int(floor(z)) & 255
@@ -62,7 +63,7 @@ class PerlinRef(object):
         """Return a colour."""
         colour = [0,0,0]
                 
-        hash_val = self.getHash(x * self.dx, y * self.dy)
+        hash_val = self.getFloatHash(x * self.dx, y * self.dy)
         
         self.min_hash = min(hash_val, self.min_hash)
         self.max_hash = max(hash_val, self.max_hash)
@@ -71,8 +72,17 @@ class PerlinRef(object):
         for i in range(len(colour)):
             colour[i] = grey
         
+        # hash_val = self.getHash(x, y)
+        # 
+        # colour[0] = hash_val & max_colour
+        # colour[1] = (hash_val >> 8) & max_colour
+        # colour[2] = (hash_val >> 16) & max_colour
+        
         return colour
     
+    def getHash(self, x, y):
+        return int(maxint * float(self.getFloatHash(x * self.dx, y * self.dy)))
+        
 def fade(t):
     return t * t * t * (t * (t * 6 - 15) + 10)
 
@@ -85,4 +95,4 @@ def grad(hsh, x, y, z):
     v = y if h<4 else x if h==12 or h==14 else z
     return (u if (h&1) == 0 else -u) + (v if (h&2) == 0 else -v)
    
-
+    

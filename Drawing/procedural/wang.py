@@ -13,13 +13,16 @@ class Mix32Bit:
         """Return a colour."""
         colour = [0,0,0]
         
-        wangs = hash32Shift(x + (y * self.width))
+        wangs = getHash(x, y)
         
         colour[0] = wangs & max_colour
         colour[1] = (wangs >> 8) & max_colour
         colour[2] = (wangs >> 16) & max_colour
             
         return colour
+    
+    def getHash(self, x, y):
+        return hash32Shift(x + (y * self.width))
 
 class MultiplicationHash:
     """Thomas Wang's Multiplication for hashing function"""
@@ -32,13 +35,16 @@ class MultiplicationHash:
         """Return a colour."""
         colour = [0,0,0]
             
-        wangs = hash32ShiftMulti(x + (y * self.width))
+        wangs = getHash(x, y)
         
         colour[0] = wangs & max_colour
         colour[1] = (wangs >> 8) & max_colour
         colour[2] = (wangs >> 16) & max_colour
             
         return colour
+    
+    def getHash(self, x, y):
+        return hash32ShiftMulti(x + (y * self.width))
     
 class Mix64Bit:
     """Thomas Wang's 64 bit Mix Function"""
@@ -52,13 +58,16 @@ class Mix64Bit:
         """Return a colour."""
         colour = [0,0,0]
         
-        wangs = hash64Shift(long(x) + (long(y) * self.width))
+        wangs = getHash(x, y)
         
         colour[0] = wangs & max_colour
         colour[1] = (wangs >> 8) & max_colour
         colour[2] = (wangs >> 16) & max_colour
             
         return colour
+    
+    def getHash(self, x, y):
+        return hash64Shift(long(x) + (long(y) * self.width))
 
 def hash32Shift(key):
     key = ~key + lshift(key, 15)  # key = (key << 15) - key - 1
