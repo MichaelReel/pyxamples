@@ -1,4 +1,4 @@
-from globals import *
+from procedural import *
 import math, sys
 
 # Lifted from: http://freespace.virgin.net/hugo.elias/models/m_perlin.htm

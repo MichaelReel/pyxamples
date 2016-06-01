@@ -1,4 +1,4 @@
-from globals import *
+from procedural import *
 import hashlib, sys
 
 class Hashing:

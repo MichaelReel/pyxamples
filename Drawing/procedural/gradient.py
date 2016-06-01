@@ -1,4 +1,4 @@
-from globals import *
+from procedural import *
 
 class Gradient:
     """A simple red + blue = magenta gradient class"""

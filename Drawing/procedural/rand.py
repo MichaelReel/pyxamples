@@ -1,5 +1,5 @@
 import random, sys
-from globals import *
+from procedural import *
 
 class RandomColour:
     """A simple class that ignore input and returns a random colour"""

@@ -1,4 +1,4 @@
-from globals import *
+from procedural import *
 
 # lifted from : https://gist.github.com/badboy/6267743
 

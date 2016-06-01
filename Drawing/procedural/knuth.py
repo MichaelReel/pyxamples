@@ -1,4 +1,4 @@
-from globals import *
+from procedural import *
 
 class Multiplactive:
     """Knuths Multiplicative Method"""

@@ -1,5 +1,5 @@
 from math import floor
-from globals import *
+from procedural import *
 from sys import maxint
 import random
 
