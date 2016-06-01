@@ -33,8 +33,8 @@ def getLongestWords(inputStr, dictFile):
             if key in wordDict and len(wordDict[key]) > len(outputArr[k]):
                 outputArr[k] = wordDict[key]
     
-    for k in range(len(inputArr)):
-        print "{} = {}".format(inputArr[k], outputArr[k])
+    for k, v in zip(inputArr, outputArr):
+        print "{} = {}".format(k, v)
         
     print "Time taken: {}".format(time() - startTime)
 
