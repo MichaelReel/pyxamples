@@ -24,6 +24,24 @@
                 "WaitOnAbnormalExit",
                 "WaitOnNormalExit"
             ]
+        },
+        {
+            "name": "Django Tutorial",
+            "type": "python",
+            "request": "launch",
+            "stopOnEntry": true,
+            "program": "${workspaceRoot}/DjangoTutorial/Tutorial/manage.py",
+            "args": [
+                "runserver",
+                "8080",
+                "--noreload"
+            ],
+            "debugOptions": [
+                "WaitOnAbnormalExit",
+                "WaitOnNormalExit",
+                "RedirectOutput",
+                "DjangoDebugging"
+            ]
         }
     ]
 }
