@@ -29,7 +29,7 @@
             "name": "Django Tutorial",
             "type": "python",
             "request": "launch",
-            "stopOnEntry": true,
+            "stopOnEntry": false,
             "program": "${workspaceRoot}/DjangoTutorial/Tutorial/manage.py",
             "args": [
                 "runserver",
