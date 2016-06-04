@@ -11,7 +11,11 @@ This requires that Django is installed. It can be installed via pip:
  1. Change your models (in models.py).
  1. Run `python manage.py makemigrations <app>` to create migrations for those changes.
  1. Run `python manage.py migrate` to apply those changes to the database.
- 
+
+#### To set up the developer database
+
+> python manage.py migrate
+
 #### To use the admin interface
 
 Create a user who can login to the admin site
