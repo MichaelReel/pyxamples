@@ -6,6 +6,18 @@ This requires that Django is installed. It can be installed via pip:
 
 ## Notes
 
+#### Test Coverage
+
+For installing the coverage tool use:
+
+> pip install coverage
+
+To run and produce coverage html
+
+> coverage --source='.' manage.py test 
+
+> coverage html
+
 #### Three-step guide to making model changes:
 
  1. Change your models (in models.py).
