@@ -42,6 +42,22 @@
                 "RedirectOutput",
                 "DjangoDebugging"
             ]
+        },
+        {
+            "name": "Django Tests",
+            "type": "python",
+            "request": "launch",
+            "stopOnEntry": false,
+            "program": "${workspaceRoot}/DjangoTutorial/Tutorial/manage.py",
+            "args": [
+                "test"
+            ],
+            "debugOptions": [
+                "WaitOnAbnormalExit",
+                "WaitOnNormalExit",
+                "RedirectOutput",
+                "DjangoDebugging"
+            ]
         }
     ]
 }
