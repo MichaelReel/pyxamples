@@ -14,7 +14,7 @@ For installing the coverage tool use:
 
 To run and produce coverage html
 
-> coverage run --source='polls' manage.py test 
+> coverage run --source='polls' --branch manage.py test polls
 
 > coverage html
 

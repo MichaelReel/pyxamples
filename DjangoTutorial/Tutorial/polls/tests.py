@@ -6,7 +6,7 @@ import datetime
 
 # Create your tests here.
 
-from .models import Question
+from .models import Question, Choice
 
 class QuestionMethodTests(TestCase):
     
@@ -38,6 +38,16 @@ class QuestionMethodTests(TestCase):
         recent_question = Question(pub_date=time)
         self.assertEqual(recent_question.was_published_recently(), True)
         
+class ChoiceMethodTests(TestCase):
+    
+    def test_str(self):
+        """
+        __str__ should return the choice_text
+        """
+        text = "This is a choice"
+        choice = Choice(choice_text=text, votes=0)
+        self.assertEqual("{}".format(choice), text)
+        
 def create_question(question_text, days):
     """
     Creates a question with the given `question_text` and published the
@@ -47,7 +57,12 @@ def create_question(question_text, days):
     time = timezone.now() + datetime.timedelta(days=days)
     return Question.objects.create(question_text=question_text, pub_date=time)
     
-
+def add_choice(choice_text, question):
+    """
+    Adds an choice to a question
+    """
+    return question.choice_set.create(choice_text=choice_text, votes=0)
+    
 class QuestionViewTests(TestCase):
     def test_index_view_with_no_questions(self):
         """
@@ -122,6 +137,12 @@ class QuestionIndexDetailTests(TestCase):
         display the question's text.
         """
         past_question = create_question(question_text='Past Question.', days=-5)
+        choice_1 = add_choice(choice_text='Choice 1', question=past_question)
+        choice_2 = add_choice(choice_text='Choice 2', question=past_question)
+        
         url = reverse('polls:detail', args=(past_question.id,))
         response = self.client.get(url)
+        
         self.assertContains(response, past_question.question_text)
+        self.assertContains(response, choice_1.choice_text)
+        self.assertContains(response, choice_2.choice_text)
