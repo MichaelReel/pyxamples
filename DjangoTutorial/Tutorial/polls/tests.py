@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.utils import timezone
 from django.core.urlresolvers import reverse
+from django.http import QueryDict
 import datetime
-
 
 # Create your tests here.
 
@@ -146,3 +146,77 @@ class QuestionIndexDetailTests(TestCase):
         self.assertContains(response, past_question.question_text)
         self.assertContains(response, choice_1.choice_text)
         self.assertContains(response, choice_2.choice_text)
+        
+class QuestionVoteTests(TestCase):
+    def test_vote_where_question_doesnt_exist(self):
+        """
+        Try to vote on a question that doesn't exist
+        """
+        url = reverse('polls:vote', args=("1",))
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 404)
+        
+    def test_vote_where_question_is_in_the_future(self):
+        """
+        Try to vote on a question with a pub_date in the future should
+        return a 404 not found.
+        """
+        future_question = create_question(question_text='Future question.', days=5)
+        url = reverse('polls:vote', args=(future_question.id,))
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 404)
+        
+    def test_vote_with_a_past_question_choice_not_selected(self):
+        """
+        The voting on a question with a pub_date in the past, but not defining
+        a choice should display the question's text, but will also complain 
+        that a Choice was not selected
+        """
+        past_question = create_question(question_text='Past Question.', days=-5)
+        choice_1 = add_choice(choice_text='Choice 1', question=past_question)
+        choice_2 = add_choice(choice_text='Choice 2', question=past_question)
+        
+        url = reverse('polls:vote', args=(past_question.id,))
+        response = self.client.post(url)
+        
+        self.assertContains(response, past_question.question_text)
+        self.assertContains(response, choice_1.choice_text)
+        self.assertContains(response, choice_2.choice_text)
+        self.assertContains(response, "You didn&#39;t select a choice.")
+        
+    def test_vote_with_a_past_question_choice_isnt_valid(self):
+        """
+        The voting on a question with a pub_date in the past, but defining a 
+        choice that doesn't exist should display the question's text, but will 
+        also complain that a Choice was not selected
+        """
+        past_question = create_question(question_text='Past Question.', days=-5)
+        choice_1 = add_choice(choice_text='Choice 1', question=past_question)
+        choice_2 = add_choice(choice_text='Choice 2', question=past_question)
+        
+        url = reverse('polls:vote', args=(past_question.id,))
+        response = self.client.post(url, {'choice' : 3})
+        
+        self.assertContains(response, past_question.question_text)
+        self.assertContains(response, choice_1.choice_text)
+        self.assertContains(response, choice_2.choice_text)
+        self.assertContains(response, "You didn&#39;t select a choice.")
+        
+    def test_vote_with_a_past_question(self):
+        """
+        The voting on a question with a pub_date in the past, but defining a 
+        choice that doesn't exist should display the question's text, but will 
+        also complain that a Choice was not selected
+        """
+        past_question = create_question(question_text='Past Question.', days=-5)
+        choice_1 = add_choice(choice_text='Choice 1', question=past_question)
+        choice_2 = add_choice(choice_text='Choice 2', question=past_question)
+        
+        url = reverse('polls:vote', args=(past_question.id,))
+        response = self.client.post(url, {'choice' : 1}, follow=True)
+        
+        print response
+        
+        self.assertContains(response, past_question.question_text)
+        self.assertContains(response, choice_1.choice_text + " -- 1 vote")
+        self.assertContains(response, choice_2.choice_text + " -- 0 votes")
