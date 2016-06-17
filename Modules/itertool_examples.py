@@ -101,10 +101,94 @@ def islice_ex():
     print ' '.join( islice('ABCDEFG', 2, None)    )              # C D E F G
     print ' '.join( islice('ABCDEFG', 0, None, 2) )              # A C E G
 
+def imap_ex():
+    # Returns an interator that computes a function using sets of iterables as parameters
+    for i in imap(pow, (2, 3, 10), (5, 2, 3)):
+        print i
+        # 32
+        # 9
+        # 1000
+
+    # the index access `[::-1]` steps through the string in reverse
+    print ' '.join( imap(lambda s: s[::-1], ("CBA", "FED", "IHG")) )
+    # ABC DEF GHI
+
+def starmap_ex():
+    # Similar to imap, but each group of arguments is in an iterable of tuples
+    for i in starmap(pow, [(2, 5), (3, 2), (10, 3)]):
+        print i
+        # 32
+        # 9
+        # 1000
+
+    for z in starmap(zip, [("AC", "BD"), ("EG", "FH"), ("IK", "JL")]):
+        print z
+        # [('A', 'B'), ('C', 'D')]
+        # [('E', 'F'), ('G', 'H')]
+        # [('I', 'J'), ('K', 'L')]
+
+    def interleave(s, t):
+        return ''.join(chain(*zip(s, t)))
+
+    print ' '.join( starmap(interleave, [("AC", "BD"), ("EG", "FH"), ("IK", "JL")]) )
+    # ABCD EFGH IJKL
+    
+def tee_ex():
+    # Makes duplicate iterators that mimic the base iterator, but can be progressed independently
+    it_count = 3
+    
+    def iter_func():
+        for i in range(it_count): yield i
+    
+    iters = tee(iter_func(), it_count)
+
+    # Use the next value from the current iterator to choose the next iterator
+    i = it_count - 1
+    while True:
+        try:
+             i = iters[i].next()
+        except: 
+            break
+        print i
+        # 0\ 0\ 1\ 0\ 2\ 1\ 1\ 2\ 2\       # it_count = 3
+
+def takewhile_ex():
+    # Take elements while predicate is True, return no elements after
+    for i in takewhile(lambda x: x<5, [1, 4, 6, 4, 1]):
+        print i
+        # 1
+        # 4
+
+def izip_ex():
+    # Aggregate elements for each iterable
+    print ''.join( chain( *izip("ABCD", "xy") ) )
+    # AxBy
+    for s in izip("ABCD", "xy"):
+        print s
+        # ('A', 'x')
+        # ('B', 'y')
+    
+def izip_longest_ex():
+    # Aggregate elements for each iterable
+    print ''.join( chain( *izip_longest("ABCD", "xy", fillvalue='-') ) )
+    # AxByC-D-
+    for s in izip_longest("ABCD", "xy", fillvalue=' '):
+        print s
+        # ('A', 'x')
+        # ('B', 'y')
+        # ('C', ' ')
+        # ('D', ' ')
+
+
+
+# Infinite Iterator examples:
 
 # count_ex()
 # cycle_ex()
 # repeat_ex()
+
+# Shortest input terminating Iterator examples:
+
 # chain_ex()
 # compress_ex()
 # dropwhile_ex()
@@ -112,3 +196,9 @@ def islice_ex():
 # ifilter_ex()
 # ifilterfalse_ex()
 # islice_ex()
+# imap_ex()
+# starmap_ex()
+# tee_ex()
+# takewhile_ex()
+# izip_ex()
+# izip_longest_ex()
