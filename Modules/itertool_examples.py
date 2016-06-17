@@ -2,7 +2,7 @@ from itertools import *
 
 # Samples based on descriptions at https://docs.python.org/2/library/itertools.html
 
-# Infinite Iterators:
+### Infinite Iterators:
 
 def count_ex():
     # count will continue to produce values infinitely
@@ -28,7 +28,7 @@ def repeat_ex():
     print ' '.join( repeat("meh", 4) )
     # meh meh meh meh
 
-# Iterators terminating in the shortest input sequence:
+### Iterators terminating in the shortest input sequence:
 
 def chain_ex():
     # Exhausts all iterables in sequence
@@ -178,16 +178,147 @@ def izip_longest_ex():
         # ('B', 'y')
         # ('C', ' ')
         # ('D', ' ')
+    
+    # Using izip_longest for matrix translation, (James H)
+    lines = ["111","10","000"]
+    trans = izip_longest(*lines, fillvalue=' ')
+    for l in trans:
+        print(''.join(l))
+        # 110
+        # 100
+        # 1 0
 
+### Combinatoric generator examples:
 
+def product_ex():
+    # Cartesian product, equivalent to a nested for loop
+    # Elements unique based on position rather than value
+    for s in product('ABC', repeat=2):
+        print s
+        # ('A', 'A')
+        # ('A', 'B')
+        # ('A', 'C')
+        # ('B', 'A')
+        # ('B', 'B')
+        # ('B', 'C')
+        # ('C', 'A')
+        # ('C', 'B')
+        # ('C', 'C')
 
-# Infinite Iterator examples:
+    for s in product(range(2), repeat=3):
+        print s
+        # (0, 0, 0)
+        # (0, 0, 1)
+        # (0, 1, 0)
+        # (0, 1, 1)
+        # (1, 0, 0)
+        # (1, 0, 1)
+        # (1, 1, 0)
+        # (1, 1, 1)
+
+    for s in product("XX", repeat=2):
+        print s
+        # ('X', 'X')
+        # ('X', 'X')
+        # ('X', 'X')
+        # ('X', 'X')
+
+def permutations_ex():
+    # Return successive r length permutations 
+    # Elements unique based on position rather than value
+    for s in permutations('ABC', r=2):
+        print s
+        # ('A', 'B')
+        # ('A', 'C')
+        # ('B', 'A')
+        # ('B', 'C')
+        # ('C', 'A')
+        # ('C', 'B')
+
+    for s in permutations(range(3)):
+        print s
+        # (0, 1, 2)
+        # (0, 2, 1)
+        # (1, 0, 2)
+        # (1, 2, 0)
+        # (2, 0, 1)
+        # (2, 1, 0)
+
+    for s in permutations('XX', r=2):
+        print s
+        # ('X', 'X')
+        # ('X', 'X')
+
+def combinations_ex():
+    # Return r length subsequences in sorted order
+    # Elements unique based on position rather than value
+    for s in combinations('ABC', r=2):
+        print s
+        # ('A', 'B')
+        # ('A', 'C')
+        # ('B', 'C')
+
+    for s in combinations(range(3), r=3):
+        print s
+        # (0, 1, 2)
+
+    for s in combinations(range(3), r=2):
+        print s
+        # (0, 1)
+        # (0, 2)
+        # (1, 2)
+
+    for s in combinations('XX', r=2):
+        print s
+        # ('X', 'X')
+
+def combinations_with_replacement_ex():
+    # Return r length subsequences in sorted order
+    # Elements unique based on position rather than value
+    for s in combinations_with_replacement('ABC', r=2):
+        print s
+        # ('A', 'A')
+        # ('A', 'B')
+        # ('A', 'C')
+        # ('B', 'B')
+        # ('B', 'C')
+        # ('C', 'C')
+
+    for s in combinations_with_replacement(range(3), r=3):
+        print s
+        # (0, 0, 0)
+        # (0, 0, 1)
+        # (0, 0, 2)
+        # (0, 1, 1)
+        # (0, 1, 2)
+        # (0, 2, 2)
+        # (1, 1, 1)
+        # (1, 1, 2)
+        # (1, 2, 2)
+        # (2, 2, 2)
+
+    for s in combinations_with_replacement(range(3), r=2):
+        print s
+        # (0, 0)
+        # (0, 1)
+        # (0, 2)
+        # (1, 1)
+        # (1, 2)
+        # (2, 2)
+
+    for s in combinations_with_replacement('XX', r=2):
+        print s
+        # ('X', 'X')
+        # ('X', 'X')
+        # ('X', 'X')
+
+### Infinite Iterator examples:
 
 # count_ex()
 # cycle_ex()
 # repeat_ex()
 
-# Shortest input terminating Iterator examples:
+### Shortest input terminating Iterator examples:
 
 # chain_ex()
 # compress_ex()
@@ -202,3 +333,10 @@ def izip_longest_ex():
 # takewhile_ex()
 # izip_ex()
 # izip_longest_ex()
+
+### Combinatoric generator examples
+
+# product_ex()
+# permutations_ex()
+# combinations_ex()
+# combinations_with_replacement_ex()
