@@ -7,10 +7,18 @@ inputs = [
 
 def rotateVect90((x, y), cwise = True):
     """
-    rotate a vector of the form (x, y) where one value is zero and the other is +/-1
-    by 90 degrees where cwise indicates clockwise if true, anticlockwise otherwise
+    Return a rotated vector of the form (x, y) where one value is zero and the
+    other is +/-1 by 90 degrees where cwise indicates clockwise if true, 
+    anticlockwise otherwise
     """
     return (-y if y != 0 else y, x) if cwise else (y, -x if x != 0 else x)
+
+def flipVect((x, y)):
+    """
+    Return a flipped vector that gives the 180 degree rotation of the 
+    input vector
+    """
+    return (-x, -y)
 
 def wordSnake(words):
     # canvas is a deque of deques, so we can expand in any direction
@@ -31,8 +39,8 @@ def wordSnake(words):
         with a word, the checkDir returns true.
         """
         pos = (x + dx, y + dy)
-        while 0 <= pos[0] < len(canvas) and 0 <= pos[1] < len(canvas[y]):
-            if canvas[y][x] != fillChar:
+        while 0 <= pos[1] < len(canvas) and 0 <= pos[0] < len(canvas[y]):
+            if canvas[pos[1]][pos[0]] != fillChar:
                 return False
             pos = (pos[0] + dx, pos[1] + dy)
         return True
@@ -75,7 +83,8 @@ def wordSnake(words):
             for n in range(down):
                 canvas.append(deque([fillChar] * width))
 
-        # Insert the word and update the pos to the end point
+        # Insert the word (except the first letter)
+        # and update the pos to the end point
         for c in word[1:]:
             pos = (pos[0] + dx, pos[1] + dy)
             canvas[pos[1]][pos[0]] = c
@@ -83,19 +92,27 @@ def wordSnake(words):
         printCanvas()
         return pos
                 
-            
-
-    vect = (0,1)
-
-    pos = insertWord(( 0, 0), ( 0,-1), "spoon")
-    pos = insertWord(    pos, ( 1, 0), "spoon")
-    pos = insertWord(    pos, ( 0, 1), "spoon")
-    pos = insertWord(    pos, (-1, 0), "spoon")
+    vect = (0, 1)
+    cw = True
+    pos = (0, 0)
 
     # for word in words:
+    for word in words:
+        # See if the word can actually be inserted
+        if checkDir(pos, vect, word):
+            pos = insertWord(pos, vect, word)
+        else:
+            vect = flipVect(vect)
+            cw = not cw
+            if checkDir(pos, vect, word):
+                pos = insertWord(pos, vect, word)
+            else:
+                printCanvas()
+                raise Exception("Dead end, cannot insert %" % word)
+        vect = rotateVect90(vect, cw)
 
 
 
 # Just go right with every second word
-wordSnake(inputs[0].split(" "))
-# wordSnake(inputs[1].split(" "))
+# wordSnake(inputs[0].split(" "))
+wordSnake(inputs[1].split(" "))
