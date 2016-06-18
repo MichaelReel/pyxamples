@@ -16,6 +16,11 @@ def wordSnake(words):
     # canvas is a deque of deques, so we can expand in any direction
     canvas = deque()
     canvas.append(deque(words[0][0]))
+    fillChar = '-'
+
+    def printCanvas():
+        for line in canvas:
+            print ''.join(line)
 
     def checkDir((x, y),(dx,dy), word):
         """
@@ -27,7 +32,7 @@ def wordSnake(words):
         """
         pos = (x + dx, y + dy)
         while 0 <= pos[0] < len(canvas) and 0 <= pos[1] < len(canvas[y]):
-            if canvas[y][x] != " ":
+            if canvas[y][x] != fillChar:
                 return False
             pos = (pos[0] + dx, pos[1] + dy)
         return True
@@ -53,27 +58,29 @@ def wordSnake(words):
         print left, up, right, down
 
         # expand the boundaries and update the pos, where applicable
-        # Insert the word and update the pos to the end point
         if left:
             for line in canvas:
-                line.extendleft([' '] * left)
+                line.extendleft([fillChar] * left)
             pos = (pos[0] + left, pos[1])
         if up:
             width = len(canvas[y])
             for n in range(up):
-                canvas.appendleft(deque([' '] * width))
+                canvas.appendleft(deque([fillChar] * width))
             pos = (pos[0], pos[1] + up)
         if right:
             for line in canvas:
-                line.extend([' '] * right)
+                line.extend([fillChar] * right)
         if down:
             width = len(canvas[y])
             for n in range(down):
-                canvas.append(deque([' '] * width))
-        
+                canvas.append(deque([fillChar] * width))
 
+        # Insert the word and update the pos to the end point
+        for c in word[1:]:
+            pos = (pos[0] + dx, pos[1] + dy)
+            canvas[pos[1]][pos[0]] = c
 
-        print canvas
+        printCanvas()
         return pos
                 
             
@@ -82,8 +89,8 @@ def wordSnake(words):
 
     pos = insertWord(( 0, 0), ( 0,-1), "spoon")
     pos = insertWord(    pos, ( 1, 0), "spoon")
-    pos = insertWord(    pos, (-1, 0), "spoon")
     pos = insertWord(    pos, ( 0, 1), "spoon")
+    pos = insertWord(    pos, (-1, 0), "spoon")
 
     # for word in words:
 
