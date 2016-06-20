@@ -106,6 +106,35 @@ class ColourPerlin(object):
         colour[2] = self.be.getColour((x, y))[2]
         
         return colour
+
+class PerlinBlobs(object):
+    def __init__(self, (width, height), seed, zoom, marker, threshold):
+        self.marker = marker
+        self.threshold = threshold
+        self.perlinData = SeededPerlinRef((width, height), seed, zoom)
+
+    def getColour(self, (x, y)):
+        """Return a colour."""
+        colour = [0,0,0]
+        data = self.perlinData.getColour((x, y))[0]
+        if self.marker - self.threshold > data:
+            colour[0] = 255
+        if data > self.marker + self.threshold:
+            colour [1] = 255
+        
+        return colour
+
+class PerlinContours(SeededPerlinRef):
+    def __init__(self, (width, height), seed, bars = 16, zoom = 10.0):
+        self.barSize = max_colour // bars
+        self.bars    = bars
+        super(PerlinContours, self).__init__((width, height), zoom)
+
+    def getColour(self, (x, y)):
+        uc = super(PerlinContours, self).getColour((x, y))
+        bs = self.barSize
+        bars = self.bars
+        return [(uc[0] // bars) * bs, (uc[1] // bars) * bs, (uc[2] // bars) * bs]
         
 def fade(t):
     return t * t * t * (t * (t * 6 - 15) + 10)

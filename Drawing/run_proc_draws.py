@@ -1,4 +1,4 @@
-import pygame, sys, os
+import pygame, sys, os, time
 from procedural import rand, gradient, knuth, jenkins, wang, builtin, perlin, perlin_ref
 from pygame.locals import *
 
@@ -33,7 +33,9 @@ done = False
 # generator = perlin.Linear(gridSize, md5hash, 4, 0.485)
 # generator = perlin_ref.PerlinRef(gridSize)
 # generator = perlin_ref.SeededPerlinRef(gridSize, "seed")
-generator = perlin_ref.ColourPerlin(gridSize, "mlem", (11, 13, 17))
+# generator = perlin_ref.ColourPerlin(gridSize, "mlem", (11, 13, 17))
+# generator = perlin_ref.PerlinBlobs(gridSize, "salt", 5, 128, 24)
+generator = perlin_ref.PerlinContours(gridSize, "seed")
 
 pos = [0, 0]
 colour = [0, 0, 0]
@@ -54,7 +56,7 @@ while not done:
                 print "{}".format(sys.maxint)
             elif event.key == pygame.K_F2:
                 scriptPath = os.path.dirname(os.path.realpath(__file__))
-                filePath = scriptPath + "/TESTSAVE.png"
+                filePath = scriptPath + "/TESTSAVE_" + time.strftime("%Y%m%d_%H%M%S") + ".png"
                 print "save to {}".format(filePath)
                 pygame.image.save(screen, filePath)
             
