@@ -135,6 +135,34 @@ class PerlinContours(SeededPerlinRef):
         bs = self.barSize
         bars = self.bars
         return [(uc[0] // bars) * bs, (uc[1] // bars) * bs, (uc[2] // bars) * bs]
+
+class PerlinTopography(SeededPerlinRef):
+    def __init__(self, (width, height), seed, zoom = 10.0):
+        self.transitions = [
+            (0,   [  0,   0, 198]),
+            (48,  [ 32,  32, 224]),
+            (72,  [ 32, 224,  32]),
+            (125, [ 80, 176,  80]),
+            (126, [128, 128, 128]),
+            (127, [ 80, 176,  80]),
+            (128, [ 32, 224,  32]),
+            (160, [  0, 198,   0]),
+            (192, [128, 128, 128]),
+            (208, [255, 255, 255]),
+        ]
+        super(PerlinTopography, self).__init__((width, height), zoom)
+
+    def getColour(self, (x, y)):
+        uc = super(PerlinTopography, self).getColour((x, y))[0]
+        colour = uc
+        if uc > self.transitions[-1][0]:
+            colour = self.transitions[-1][1]
+        else:
+            for contour, conext in zip(self.transitions[:-1], self.transitions[1:]):
+                if uc >= contour[0] and uc < conext[0]:
+                    colour = contour[1]
+        # print uc, colour
+        return colour
         
 def fade(t):
     return t * t * t * (t * (t * 6 - 15) + 10)

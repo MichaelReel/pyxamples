@@ -35,7 +35,8 @@ done = False
 # generator = perlin_ref.SeededPerlinRef(gridSize, "seed")
 # generator = perlin_ref.ColourPerlin(gridSize, "mlem", (11, 13, 17))
 # generator = perlin_ref.PerlinBlobs(gridSize, "salt", 5, 128, 24)
-generator = perlin_ref.PerlinContours(gridSize, "seed")
+# generator = perlin_ref.PerlinContours(gridSize, "seed")
+generator = perlin_ref.PerlinTopography(gridSize, "seed")
 
 pos = [0, 0]
 colour = [0, 0, 0]
