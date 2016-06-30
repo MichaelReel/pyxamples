@@ -29,37 +29,45 @@ uniform sampler2D tex0;
 uniform vec2 pixel;
  
 void main() {
-    // retrieve the texture coordinate
-    vec2 c = gl_TexCoord[0].xy;
+    if (distance(gl_FragCoord.xy,vec2(300,200)) < 50)
+    {
+        gl_FragColor.rgb = 1;
+        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+    }
+    else
+    {
+        // retrieve the texture coordinate
+        vec2 c = gl_TexCoord[0].xy;
 
-    // and the current pixel
-    vec3 current = texture2D(tex0, c).rgb;
+        // and the current pixel
+        vec3 current = texture2D(tex0, c).rgb;
 
-    // count the neightbouring pixels with a value greater than zero
-    vec3 neighbours = vec3(0.0);
-    neighbours += vec3(greaterThan(texture2D(tex0, c + pixel*vec2(-1,-1)).rgb, vec3(0.0)));
-    neighbours += vec3(greaterThan(texture2D(tex0, c + pixel*vec2(-1, 0)).rgb, vec3(0.0)));
-    neighbours += vec3(greaterThan(texture2D(tex0, c + pixel*vec2(-1, 1)).rgb, vec3(0.0)));
-    neighbours += vec3(greaterThan(texture2D(tex0, c + pixel*vec2( 0,-1)).rgb, vec3(0.0)));
-    neighbours += vec3(greaterThan(texture2D(tex0, c + pixel*vec2( 0, 1)).rgb, vec3(0.0)));
-    neighbours += vec3(greaterThan(texture2D(tex0, c + pixel*vec2( 1,-1)).rgb, vec3(0.0)));
-    neighbours += vec3(greaterThan(texture2D(tex0, c + pixel*vec2( 1, 0)).rgb, vec3(0.0)));
-    neighbours += vec3(greaterThan(texture2D(tex0, c + pixel*vec2( 1, 1)).rgb, vec3(0.0)));
+        // count the neightbouring pixels with a value greater than zero
+        vec3 neighbours = vec3(0.0);
+        neighbours += vec3(greaterThan(texture2D(tex0, c + pixel*vec2(-1,-1)).rgb, vec3(0.0)));
+        neighbours += vec3(greaterThan(texture2D(tex0, c + pixel*vec2(-1, 0)).rgb, vec3(0.0)));
+        neighbours += vec3(greaterThan(texture2D(tex0, c + pixel*vec2(-1, 1)).rgb, vec3(0.0)));
+        neighbours += vec3(greaterThan(texture2D(tex0, c + pixel*vec2( 0,-1)).rgb, vec3(0.0)));
+        neighbours += vec3(greaterThan(texture2D(tex0, c + pixel*vec2( 0, 1)).rgb, vec3(0.0)));
+        neighbours += vec3(greaterThan(texture2D(tex0, c + pixel*vec2( 1,-1)).rgb, vec3(0.0)));
+        neighbours += vec3(greaterThan(texture2D(tex0, c + pixel*vec2( 1, 0)).rgb, vec3(0.0)));
+        neighbours += vec3(greaterThan(texture2D(tex0, c + pixel*vec2( 1, 1)).rgb, vec3(0.0)));
 
-    // check if the current pixel is alive
-    vec3 live = vec3(greaterThan(current, vec3(0.0)));
+        // check if the current pixel is alive
+        vec3 live = vec3(greaterThan(current, vec3(0.0)));
 
-    // resurect if we are not live, and have 3 live neighrbours
-    current += (1.0-live) * vec3(equal(neighbours, vec3(3.0)));
+        // resurect if we are not live, and have 3 live neighrbours
+        current += (1.0-live) * vec3(equal(neighbours, vec3(3.0)));
 
-    // kill if we do not have either 3 or 2 neighbours
-    current *= vec3(equal(neighbours, vec3(2.0))) + vec3(equal(neighbours, vec3(3.0)));
+        // kill if we do not have either 3 or 2 neighbours
+        current *= vec3(equal(neighbours, vec3(2.0))) + vec3(equal(neighbours, vec3(3.0)));
 
-    // fade the current pixel as it ages
-    current -= vec3(greaterThan(current, vec3(0.4)))*0.05;
+        // fade the current pixel as it ages
+        current -= vec3(greaterThan(current, vec3(0.4)))*0.05;
 
-    // write out the pixel
-    gl_FragColor = vec4(current, 1.0);
+        // write out the pixel
+        gl_FragColor = vec4(current, 1.0);
+    }
 }
 '''])
  
@@ -78,6 +86,14 @@ texture = pyglet.image.load('game_of_life_init.png').get_texture()
 batch = pyglet.graphics.Batch()
 batch.add(4, GL_QUADS, None, ('v2i', (0,0, 1,0, 1,1, 0,1)), ('t2f', (0,0, 1.0,0, 1.0,1.0, 0,1.0)))
  
+
+
+label = pyglet.text.Label('Hello, World!!',
+                        font_name='Times New Roman',
+                        font_size=36,
+                        x=window.width//2, y=window.height//2,
+                        anchor_x='center', anchor_y='center')
+
 # utility function to copy the framebuffer into a texture
 def copyFramebuffer(tex, *size):
     # if we are given a new size
