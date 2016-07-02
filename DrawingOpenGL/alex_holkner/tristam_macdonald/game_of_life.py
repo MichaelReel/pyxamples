@@ -85,14 +85,6 @@ texture = pyglet.image.load('game_of_life_init.png').get_texture()
 # create a fullscreen quad
 batch = pyglet.graphics.Batch()
 batch.add(4, GL_QUADS, None, ('v2i', (0,0, 1,0, 1,1, 0,1)), ('t2f', (0,0, 1.0,0, 1.0,1.0, 0,1.0)))
- 
-
-
-label = pyglet.text.Label('Hello, World!!',
-                        font_name='Times New Roman',
-                        font_size=36,
-                        x=window.width//2, y=window.height//2,
-                        anchor_x='center', anchor_y='center')
 
 # utility function to copy the framebuffer into a texture
 def copyFramebuffer(tex, *size):
