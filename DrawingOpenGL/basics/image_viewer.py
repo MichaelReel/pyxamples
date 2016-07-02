@@ -1,7 +1,7 @@
 import pyglet
 
 window = pyglet.window.Window()
-image = pyglet.image.load('alex_holkner/tristam_macdonald/game_of_life_init.png')
+image = pyglet.image.load('image.png')
 pos = [(window.width - image.width ) //2, (window.height - image.height) //2]
 
 @window.event
