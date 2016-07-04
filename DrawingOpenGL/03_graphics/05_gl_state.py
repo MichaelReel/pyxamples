@@ -1,6 +1,8 @@
 from pyglet.gl import *
 from pyglet.graphics import *
 
+# http://pyglet.readthedocs.io/en/latest/programming_guide/graphics.html#setting-the-opengl-state
+
 texture1 = pyglet.image.load('../image.png').get_texture()
 
 window = pyglet.window.Window()
@@ -37,7 +39,7 @@ class TextureBindGroup(pyglet.graphics.Group):
 
 batch.add(4, GL_QUADS, TextureBindGroup(texture1), 
     ('v2f', (0, 0, 0, window.height, window.width, window.height, window.width, 0)), 
-    ('t2f', (0, 0, 0, 0.7, 0.8, 0.7, 0.8, 0)), # values need calculated from orig size to size on GL texture
+    ('t3f', texture1.tex_coords), # Use the 3d tex coords supplied by the image load
     )
 
 @window.event
