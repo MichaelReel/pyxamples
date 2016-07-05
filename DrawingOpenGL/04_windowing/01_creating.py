@@ -19,8 +19,9 @@ template = pyglet.gl.Config(alpha_size=8)
 
 # Supply a template Config using the config argument
 # Custom configs appear to have issues with some environments
-# Win 8 64x, Python 2.7.11, pyglet 1.2.0 - 1.2.4:  Doesn't work
-# Win 8 64x, Python 2.7.11, pyglet 1.1.4  :  Works
+# Win 8 64x, Python 2.7.11, pyglet 1.2.0 - 1.2.4 : Doesn't work
+# Win 8 64x, Python 2.7.11, pyglet 1.1.4         : Works
+# Win 7 64x, Python 2.7.11, pyglet 1.2.4         : Works
 window1 = pyglet.window.Window(config=config)
 
 # Specify a Screen using the screen argument
