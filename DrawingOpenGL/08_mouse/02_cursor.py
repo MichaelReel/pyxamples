@@ -17,18 +17,19 @@ class MouseEventWindow(pyglet.window.Window):
         image = pyglet.image.load('../icons/32x32.png')
         # Set "hot" spot to the top left corner
         cursor = pyglet.window.ImageMouseCursor(image, 0, 32)
-        #  TODO: This only seems to be drawn at the mouse_enter position
         self.set_mouse_cursor(cursor)
 
-    def on_mouse_enter(self, x, y):
-        print "on_mouse_enter(x={}, y={})".format(x, y)
+    # For the custom cursor to actually work mouse_motion needs to be defined!
+    def on_mouse_motion(self, x, y, dx, dy):
+        pass
 
+    # Having mouse_leave defined allows the cursor to "leave" the window.
     def on_mouse_leave(self, x, y):
-        print "on_mouse_leave(x={}, y={})".format(x, y)
+        pass
 
     def on_draw(self):
         self.clear()
-
+        
 window = MouseEventWindow()
 
 pyglet.app.run()
