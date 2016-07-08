@@ -8,7 +8,8 @@ class FPSWindow(pyglet.window.Window):
         self.label = pyglet.text.Label('0 FPS')
 
         pyglet.clock.schedule_interval(self.update, 0.01)
-        # OR use schedule(self.update) to set the rate as fast as possible
+        # OR use schedule(function) to set the rate as fast as possible
+        # Also, schedule_once(function, seconds) can be used for one off calls
 
         # Instead of update below, pyglet has a built-in fps widget:
         self.fps_display = pyglet.clock.ClockDisplay()
