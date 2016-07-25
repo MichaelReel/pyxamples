@@ -64,6 +64,9 @@ import pyglet
 from pyglet.gl import *
 from pyglet.window import key
 
+import sys
+sys.path.append('..')
+
 from tristam_macdonald.shader import Shader
 
 try:
