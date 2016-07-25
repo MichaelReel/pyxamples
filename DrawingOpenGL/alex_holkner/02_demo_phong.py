@@ -65,9 +65,9 @@ from pyglet.gl import *
 from pyglet.window import key
 
 import sys
-sys.path.append('..')
+sys.path.append('../tristam_macdonald')
 
-from tristam_macdonald.shader import Shader
+from shader import Shader
 
 try:
     # Try and create a window with multisampling (antialiasing)
