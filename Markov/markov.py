@@ -3,10 +3,12 @@ import csv
 
 class MarkovTable(object):
     
-    def __init__(self, input=None):
+    def __init__(self, input=None, csvFile=None):
         self.links = {}
         self.totals = {}
         self.headers = set()
+        if csvFile:
+            self.readCSV(csvFile)
         if input:
             self.readInputStream(input)
 
@@ -19,7 +21,7 @@ class MarkovTable(object):
         # Start and end with a space
         self.addLink(' ', word[0])
         self.addLink(word[-1], ' ')
-        for a,b in zip(word, word[1:]):
+        for a, b in zip(word, word[1:]):
             self.addLink(a, b)
 
     def addLink(self, start, end):
@@ -62,26 +64,22 @@ class MarkovTable(object):
                 else:
                     row += [0]
             writer.writerow(row)
+
+    def readCSV(self, file):
+        reader = csv.DictReader(file)
+        self.headers = sorted(reader.fieldnames)
+        self.headers.remove('')
+
+        for line in reader:
+            rowState = line['']
+            rowLinks = {}
+            rowTotal = 0
+            for header in self.headers:
+                if line[header] > 0:
+                    linkCount = int(line[header])
+                    rowLinks[header] = linkCount
+                    rowTotal += linkCount
+            self.links[rowState] = rowLinks
+            self.totals[rowState] = rowTotal
         
-# Run
-
-inputFile = 'enable1.txt'
-csvFileName = 'enable1_chains.csv'
-seed = 1
-
-with open(inputFile) as inf:
-    print "Creating Markov Tables"
-    markov = MarkovTable(inf)
-    print "Tables generated"
-
-with open(csvFileName, "w+") as csvFile:
-    print "Saving csv"
-    markov.writeCSV(csvFile)
-    print "CSV saved"
-
-print markov
-
-print "Making words:"
-rand = Random(seed)
-for i in range(100):
-    print markov.makeRandomWord(rand)
+        
