@@ -3,22 +3,61 @@ import csv
 
 class MarkovTable(object):
     
-    def __init__(self, input=None, csvFile=None):
+    def __init__(self, csvFile = None, input = None, split = '1letter'):
+        '''
+        Create the markov chain table.
+        By default the table will be empty.
+
+        Setting csvFile will attempt to read the markov data 
+        from a comma separated file handle. The file should 
+        have already been opened for reading.
+
+        Setting input will attempt to create markov data from 
+        calling readLine on the given input.
+
+        When input is given, split will determine the technique
+        used to split words into markov states.
+        split = '1letter' : 1 letter equals 1 state.
+        split = '2letter' : Every 2 letters equals 1 state, 
+                            last state may be a single letter.
+        split = '3letter' : Every 3 letters equals 1 state, 
+                            last state may be a single letter
+                            or 2 letters. This can create a 
+                            very large table.
+        '''
         self.links = {}
         self.totals = {}
         self.headers = set()
         if csvFile:
             self.readCSV(csvFile)
         if input:
-            self.readInputStream(input)
+            self.readInputStream(input, split)
 
-    def readInputStream(self, input):
+    def readInputStream(self, input, split):
         for line in input.readlines():
             line = line.strip()
-            self.insertWord(line)
+            self.insertWord(line, split)
 
-    def insertWord(self, word):
-        # Start and end with a space
+    def insertWord(self, word, split):
+        commands = {
+                '1letter' : lambda x: self.splitLetter(x),
+                '2letter': lambda x: self.splitMultiLetter(x, 2),
+                '3letter': lambda x: self.splitMultiLetter(x, 3),
+            }
+        try:
+            return commands[split](word)
+        except KeyError as e:
+            print "KeyError caused by invalid split command '{}', valid commands are: {}".format(split, commands.keys())
+            raise e
+    
+    def splitLetter(self, word):
+        self.addLink(' ', word[0])
+        self.addLink(word[-1], ' ')
+        for a, b in zip(word, word[1:]):
+            self.addLink(a, b)
+    
+    def splitMultiLetter(self, word_in, n):
+        word = [word_in[i:i+n] for i in range(0, len(word_in), n)]
         self.addLink(' ', word[0])
         self.addLink(word[-1], ' ')
         for a, b in zip(word, word[1:]):
@@ -56,7 +95,7 @@ class MarkovTable(object):
         writer = csv.writer(file)
         headers = sorted(self.headers)
         writer.writerow([''] + headers)
-        for key in self.links.keys():
+        for key in headers:
             row = [key]
             for title in headers:
                 if title in self.links[key].keys():

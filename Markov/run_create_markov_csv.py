@@ -1,11 +1,11 @@
 from markov import MarkovTable
 
 inputFile = 'enable1.txt'
-csvFileName = 'enable1_chains.csv'
+csvFileName = 'chains_1letter.csv'
 
 with open(inputFile) as inf:
     print "Creating Markov Tables"
-    markov = MarkovTable(input=inf)
+    markov = MarkovTable(input=inf, split = '1letter')
     print "Tables generated"
 
 with open(csvFileName, "wb") as csvFile:

@@ -1,7 +1,7 @@
 from markov import MarkovTable
 from random import Random
 
-csvFileName = 'enable1_chains.csv'
+csvFileName = 'chains_2letter.csv'
 seed = 1
 
 with open(csvFileName, "rb") as csvFile:
