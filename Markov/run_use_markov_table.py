@@ -1,7 +1,7 @@
 from markov import MarkovTable
 from random import Random
 
-csvFileName = 'chains_2letter.csv'
+csvFileName = 'chains_consonants.csv'
 seed = 1
 
 with open(csvFileName, "rb") as csvFile:
@@ -9,7 +9,7 @@ with open(csvFileName, "rb") as csvFile:
     markov = MarkovTable(csvFile=csvFile)
     print "CSV loaded"
 
-print "Making words:"
+print "Making words:\n"
 rand = Random(seed)
 for i in range(100):
     print markov.makeRandomWord(rand)

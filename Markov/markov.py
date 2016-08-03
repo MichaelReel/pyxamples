@@ -1,5 +1,8 @@
 from random import Random
-import csv
+import csv, re
+
+vowels     = 'aeiou'
+consonants = 'bcdfghjklmnpqrstvwxyz'
 
 class MarkovTable(object):
     
@@ -40,9 +43,10 @@ class MarkovTable(object):
 
     def insertWord(self, word, split):
         commands = {
-                '1letter' : lambda x: self.splitLetter(x),
-                '2letter': lambda x: self.splitMultiLetter(x, 2),
-                '3letter': lambda x: self.splitMultiLetter(x, 3),
+                '1letter'    : lambda x: self.splitLetter(x),
+                '2letter'    : lambda x: self.splitMultiLetter(x, 2),
+                '3letter'    : lambda x: self.splitMultiLetter(x, 3),
+                'consonants' : lambda x: self.splitByRegex(x, "([aeiou]*[bcdfghjklmnpqrstvwxyz]{1})"),
             }
         try:
             return commands[split](word)
@@ -63,6 +67,13 @@ class MarkovTable(object):
         for a, b in zip(word, word[1:]):
             self.addLink(a, b)
 
+    def splitByRegex(self, word_in, regex):
+        word = filter(None, re.split(regex, word_in))
+        self.addLink(' ', word[0])
+        self.addLink(word[-1], ' ')
+        for a, b in zip(word, word[1:]):
+            self.addLink(a, b)
+
     def addLink(self, start, end):
         self.headers.add(start)
         self.headers.add(end)
@@ -78,18 +89,20 @@ class MarkovTable(object):
         return str(self.links)
 
     def makeRandomWord(self, rand):
-        # Use space to find a starting letter:
-        word = self.getRandomLinkedLetter(' ', rand)
-        while word[-1] != ' ':
-            word += self.getRandomLinkedLetter(word[-1], rand)
+        # Use space to find a starting state:
+        state = self.getRandomLinkedState(' ', rand)
+        word = state
+        while state != ' ':
+            state = self.getRandomLinkedState(state, rand)
+            word += state
         return word
         
-    def getRandomLinkedLetter(self, letter, rand):
-        pos = rand.randint(0, self.totals[letter])
-        for nextLetter in self.links[letter].keys():
-            pos -= self.links[letter][nextLetter]
+    def getRandomLinkedState(self, state, rand):
+        pos = rand.randint(0, self.totals[state])
+        for nextState in self.links[state].keys():
+            pos -= self.links[state][nextState]
             if pos < 0:
-                return nextLetter
+                return nextState
 
     def writeCSV(self, file):
         writer = csv.writer(file)
