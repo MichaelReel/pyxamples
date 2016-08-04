@@ -1,5 +1,5 @@
 from random import Random
-import csv, re
+import csv, re, json
 
 vowels     = 'aeiou'
 consonants = 'bcdfghjklmnpqrstvwxyz'
@@ -47,6 +47,7 @@ class MarkovTable(object):
                 '2letter'    : lambda x: self.splitMultiLetter(x, 2),
                 '3letter'    : lambda x: self.splitMultiLetter(x, 3),
                 'consonants' : lambda x: self.splitByRegex(x, "([aeiou]*[bcdfghjklmnpqrstvwxyz]{1})"),
+                'cvc'        : lambda x: self.splitByRegex(x, "([bcdfghjklmnpqrstvwxyz][aeiou]*[bcdfghjklmnpqrstvwxyz])"),
             }
         try:
             return commands[split](word)
@@ -104,34 +105,27 @@ class MarkovTable(object):
             if pos < 0:
                 return nextState
 
-    def writeCSV(self, file):
-        writer = csv.writer(file)
-        headers = sorted(self.headers)
-        writer.writerow([''] + headers)
-        for key in headers:
-            row = [key]
-            for title in headers:
-                if title in self.links[key].keys():
-                    row += [self.links[key][title]]
-                else:
-                    row += [0]
-            writer.writerow(row)
+    def writeJSON(self, fp):
+        json.dump(self.links, fp, sort_keys=True)
 
-    def readCSV(self, file):
-        reader = csv.DictReader(file)
-        self.headers = sorted(reader.fieldnames)
-        self.headers.remove('')
+    def readJSON(self, fp):
+        self.links = json.load(fp)
+        self.headers = set(self.links.keys())
+        for header in self.headers:
+            self.totals[header] = sum(self.links[header].values())
 
-        for line in reader:
-            rowState = line['']
-            rowLinks = {}
-            rowTotal = 0
-            for header in self.headers:
-                if line[header] > 0:
-                    linkCount = int(line[header])
-                    rowLinks[header] = linkCount
-                    rowTotal += linkCount
-            self.links[rowState] = rowLinks
-            self.totals[rowState] = rowTotal
-        
-        
+    def removeTopLinks(self, n):
+        '''
+        Remove the top n fraction links from each link group
+        Won't remove word enders or the only link, where present
+        '''
+        assert n > 0.0 and n < 1.0, "n should be a fraction"
+        for header in self.headers:
+            links = sorted(self.links[header], key=self.links[header].get, reverse=True)
+            for i in range(int(n * len(links))):
+                if links[i] == ' ':
+                    continue
+                if i == len(links):
+                    continue
+                del self.links[header][links[i]]
+            self.totals[header] = sum(self.links[header].values())
