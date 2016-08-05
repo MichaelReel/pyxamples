@@ -102,7 +102,7 @@ class MarkovTable(object):
         pos = rand.randint(0, self.totals[state])
         for nextState in self.links[state].keys():
             pos -= self.links[state][nextState]
-            if pos < 0:
+            if pos <= 0:
                 return nextState
 
     def writeJSON(self, fp):
@@ -128,4 +128,17 @@ class MarkovTable(object):
                 if i == len(links):
                     continue
                 del self.links[header][links[i]]
+            self.totals[header] = sum(self.links[header].values())
+
+    def normalizeLinks(self, favourSpace=True):
+        '''
+        This sets all link weights to the same value.
+        Calling removeTopLinks after calling this function
+        may will probably not have the same behaviour.
+        '''
+        for header in self.headers:
+            for state in self.links[header].keys():
+                if favourSpace and state == ' ':
+                    continue
+                self.links[header][state] = 1
             self.totals[header] = sum(self.links[header].values())

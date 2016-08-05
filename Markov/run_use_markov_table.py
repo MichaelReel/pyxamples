@@ -1,7 +1,7 @@
 from markov import MarkovTable
 from random import Random
 
-jsonFileName = 'chains_consonants.json'
+jsonFileName = 'chains_2letter.json'
 
 seed = 1
 
@@ -16,7 +16,7 @@ rand = Random(seed)
 for i in range(10):
     print markov.makeRandomWord(rand)
 
-markov.removeTopLinks(0.01)
+markov.normalizeLinks()
 
 print "Making words:\n"
 rand = Random(seed)
