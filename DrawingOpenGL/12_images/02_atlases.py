@@ -23,5 +23,5 @@ class ImageWindow(pyglet.window.Window):
         # Animation update
         self.frame_ind = (self.frame_ind + 1) % self.frame_max
 
-window = ImageWindow("../explosion.png", 1, 8)
+window = ImageWindow("explosion.png", 1, 8)
 pyglet.app.run()
