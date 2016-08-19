@@ -1,6 +1,7 @@
 #version 110
 
 uniform vec2 WindowSize;
+uniform vec2 XY;
 
 void main() {
   // Assuming screen width 512, need to fix this:
@@ -11,6 +12,13 @@ void main() {
   float fz = gl_FragCoord[2];
   float fiw = gl_FragCoord[3];
 
-  gl_FragColor = vec4(fx, fy, fz, 1.0);
+  if (distance(gl_FragCoord.xy, XY) < 5.0)
+  {
+    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+  }
+  else
+  {
+    gl_FragColor = vec4(fx, fy, fz, 1.0);
+  }
 
 }

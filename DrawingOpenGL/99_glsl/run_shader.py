@@ -11,12 +11,16 @@ class ShaderWindow(pyglet.window.Window):
     height = 512
 
     self.windowSize = (float(width), float(height))
+    self.XY = (float(width / 2), float(height / 2))
     super(ShaderWindow, self).__init__(caption = 'Shader', width=width, height=height)
 
     self.shader = Shader(
       ' '.join(open('%s.v.glsl' % shader_path)),
       ' '.join(open('%s.f.glsl' % shader_path))
     )
+
+  def on_mouse_motion(self, x, y, dx, dy):
+    self.XY = (float(x), float(y))
 
   def on_draw(self):
     glMatrixMode(GL_PROJECTION)
@@ -28,6 +32,7 @@ class ShaderWindow(pyglet.window.Window):
 
     self.shader.bind()
     self.shader.uniformf('WindowSize', *self.windowSize)
+    self.shader.uniformf('XY', *self.XY)
 
     glBegin(GL_QUADS)
     glVertex2i(-1, -1)
