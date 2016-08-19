@@ -7,7 +7,11 @@ from shader import Shader
 
 class ShaderWindow(pyglet.window.Window):
   def __init__(self, shader_path):
-    super(ShaderWindow, self).__init__(caption = 'julia', width = 512, height = 512)
+    width = 512
+    height = 512
+
+    self.windowSize = (float(width), float(height))
+    super(ShaderWindow, self).__init__(caption = 'Shader', width=width, height=height)
 
     self.shader = Shader(
       ' '.join(open('%s.v.glsl' % shader_path)),
@@ -23,6 +27,7 @@ class ShaderWindow(pyglet.window.Window):
     glLoadIdentity()
 
     self.shader.bind()
+    self.shader.uniformf('WindowSize', *self.windowSize)
 
     glBegin(GL_QUADS)
     glVertex2i(-1, -1)
