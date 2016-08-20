@@ -4,7 +4,6 @@ uniform vec2 WindowSize;
 uniform vec2 XY;
 
 void main() {
-  // Assuming screen width 512, need to fix this:
   // See: https://www.opengl.org/registry/doc/GLSLangSpec.Full.1.20.8.pdf
 
   float fx = gl_FragCoord[0] / WindowSize[0];
