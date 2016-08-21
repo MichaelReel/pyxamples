@@ -1,12 +1,18 @@
 #version 110
 #extension GL_EXT_gpu_shader4 : enable
 
+// Perlin reference implementation based on the code at
+// http://mrl.nyu.edu/~perlin/noise/
+
 #define p_size 512
 #define p_range 256.0
 #define zoom 32.0
 
+
 uniform vec2 WindowSize;
 uniform int p[p_size];
+uniform float shift;
+uniform float scale;
 
 float getHash(float x, float y, float z); 
 float fade(float t);
@@ -23,7 +29,7 @@ void main() {
       gl_FragCoord[0] * zm, 
       gl_FragCoord[1] * zm, 
       gl_FragCoord[2] * zm
-  ) + 1.0 ) / 2.0;
+  ) + shift ) * scale;
 
   if (fb < 0.0) {
     gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);

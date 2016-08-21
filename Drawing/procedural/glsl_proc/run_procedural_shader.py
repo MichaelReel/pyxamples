@@ -7,6 +7,10 @@ class ShaderWindow(pyglet.window.Window):
     self.w = 512
     self.h = 512
 
+    # Scaling values
+    self.shift = 0.793
+    self.scale = 0.622
+
     self.windowSize = (float(self.w), float(self.h))
     super(ShaderWindow, self).__init__(caption = 'Shader', width=self.w, height=self.h)
 
@@ -23,6 +27,16 @@ class ShaderWindow(pyglet.window.Window):
   def on_key_release(self, symbol, modifiers):
     if symbol == pyglet.window.key.F2:
       self.saveFromShader()
+    elif symbol == pyglet.window.key.Q:
+      self.shift += 0.001;
+    elif symbol == pyglet.window.key.A:
+      self.shift -= 0.001;
+    elif symbol == pyglet.window.key.W:
+      self.scale += 0.001;
+    elif symbol == pyglet.window.key.S:
+      self.scale -= 0.001;
+    print "shift: {}, scale: {}".format(self.shift, self.scale)
+    
 
   def saveFromShader(self):
     a = (GLubyte * (4 * self.w * self.h))(0)
@@ -64,6 +78,8 @@ class ShaderWindow(pyglet.window.Window):
     self.shader.bind()
     self.shader.uniformf('WindowSize', *self.windowSize)
     self.shader.uniformi('p', *self.p)
+    self.shader.uniformf('shift', *[self.shift])
+    self.shader.uniformf('scale', *[self.scale])
 
     glBegin(GL_QUADS)
     glVertex2i(-1, -1)
