@@ -86,6 +86,9 @@ class ShaderWindow(pyglet.window.Window):
 
     self.shader.unbind()
 
+if not pyglet.gl.gl_info.have_extension('GL_EXT_gpu_shader4'):
+  raise EnvironmentError("GL_EXT_gpu_shader4 is not supported in this environment, but required by the shader.")
+
 window = ShaderWindow('shader')
 pyglet.app.run()
 
