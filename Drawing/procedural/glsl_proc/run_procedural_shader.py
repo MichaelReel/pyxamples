@@ -8,8 +8,10 @@ class ShaderWindow(pyglet.window.Window):
     self.h = 512
 
     # Scaling values
-    self.shift = 1.993
-    self.scale = 0.242
+    self.x = -7.5
+    self.y = -7.5
+    self.zoom = 0.03
+    self.z = 0.0
 
     self.windowSize = (float(self.w), float(self.h))
     super(ShaderWindow, self).__init__(caption = 'Shader', width=self.w, height=self.h)
@@ -28,14 +30,22 @@ class ShaderWindow(pyglet.window.Window):
     if symbol == pyglet.window.key.F2:
       self.saveFromShader()
     elif symbol == pyglet.window.key.Q:
-      self.shift += 0.01;
+      self.x += 0.1;
     elif symbol == pyglet.window.key.A:
-      self.shift -= 0.01;
+      self.x -= 0.1;
     elif symbol == pyglet.window.key.W:
-      self.scale += 0.01;
+      self.y += 0.1;
     elif symbol == pyglet.window.key.S:
-      self.scale -= 0.01;
-    print "shift: {}, scale: {}".format(self.shift, self.scale)
+      self.y -= 0.1;
+    elif symbol == pyglet.window.key.E:
+      self.z += 0.1;
+    elif symbol == pyglet.window.key.D:
+      self.z -= 0.1;
+    elif symbol == pyglet.window.key.R:
+      self.zoom += 0.01;
+    elif symbol == pyglet.window.key.F:
+      self.zoom -= 0.01;
+    print "x: {}, y: {}, z: {}, zoom: {}".format(self.x, self.y, self.z, self.zoom)
     
 
   def saveFromShader(self):
@@ -78,8 +88,10 @@ class ShaderWindow(pyglet.window.Window):
     self.shader.bind()
     self.shader.uniformf('WindowSize', *self.windowSize)
     self.shader.uniformi('p', *self.p)
-    self.shader.uniformf('shift', *[self.shift])
-    self.shader.uniformf('scale', *[self.scale])
+    self.shader.uniformf('x', *[self.x])
+    self.shader.uniformf('y', *[self.y])
+    self.shader.uniformf('z', *[self.z])
+    self.shader.uniformf('zoom', *[self.zoom])
 
     glBegin(GL_QUADS)
     glVertex2i(-1, -1)

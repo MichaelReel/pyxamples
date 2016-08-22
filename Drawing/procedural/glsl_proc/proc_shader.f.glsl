@@ -6,13 +6,13 @@
 
 #define p_size 512
 #define p_range 256.0
-#define zoom 32.0
-
 
 uniform vec2 WindowSize;
 uniform int p[p_size];
-uniform float shift;
-uniform float scale;
+uniform float zoom;
+uniform float x;
+uniform float y;
+uniform float z;
 
 float getHash(float x, float y, float z); 
 float fade(float t);
@@ -21,15 +21,13 @@ float grad(int hsh, float x, float y, float z);
 
 void main() {
 
-  float zm = 1.0 / zoom;
-
   // getHash is not normalised to 0.0 <-> 1.0
   // it's really somewhere between -1.0 and +1.0
   float fb = (getHash(
-      gl_FragCoord[0] * zm, 
-      gl_FragCoord[1] * zm, 
-      gl_FragCoord[2] * zm
-  ) + shift ) * scale;
+      x + gl_FragCoord[0] * zoom, 
+      y + gl_FragCoord[1] * zoom, 
+      z
+  ) * 0.5) + 0.5;
 
   if (fb < 0.0) {
     gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
