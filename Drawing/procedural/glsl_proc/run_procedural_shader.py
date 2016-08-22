@@ -28,6 +28,17 @@ class ShaderWindow(pyglet.window.Window):
     for i in range(512):
         self.p.append(permutation[i % len(permutation)])
 
+  def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
+    self.x -= dx * self.zoom;
+    self.y -= dy * self.zoom;
+    
+  def on_mouse_release(self, x, y, button, modifiers):
+    print "x: {}, y: {}, z: {}, zoom: {}, octs: {}, freq: {}".format(self.x, self.y, self.z, self.zoom, self.octives, self.freq)
+
+  def on_mouse_scroll(self, x, y, scroll_x, scroll_y):
+    self.zoom -= scroll_y * 0.0025;
+    print "x: {}, y: {}, z: {}, zoom: {}, octs: {}, freq: {}".format(self.x, self.y, self.z, self.zoom, self.octives, self.freq)
+
   def on_key_release(self, symbol, modifiers):
     if symbol == pyglet.window.key.F2:
       self.saveFromShader()
@@ -40,13 +51,13 @@ class ShaderWindow(pyglet.window.Window):
     elif symbol == pyglet.window.key.S:
       self.y -= 0.1;
     elif symbol == pyglet.window.key.E:
-      self.z += 0.1;
+      self.z += 0.01;
     elif symbol == pyglet.window.key.D:
-      self.z -= 0.1;
+      self.z -= 0.01;
     elif symbol == pyglet.window.key.R:
-      self.zoom += 0.01;
+      self.zoom += 0.0025;
     elif symbol == pyglet.window.key.F:
-      self.zoom -= 0.01;
+      self.zoom -= 0.0025;
     elif symbol == pyglet.window.key.T:
       self.octives += 1;
     elif symbol == pyglet.window.key.G:
@@ -55,10 +66,8 @@ class ShaderWindow(pyglet.window.Window):
       self.freq += 0.01;
     elif symbol == pyglet.window.key.H:
       self.freq -= 0.01;
-
     print "x: {}, y: {}, z: {}, zoom: {}, octs: {}, freq: {}".format(self.x, self.y, self.z, self.zoom, self.octives, self.freq)
     
-
   def saveFromShader(self):
     a = (GLubyte * (4 * self.w * self.h))(0)
     glReadPixels(0, 0, self.w, self.h, GL_RGBA, GL_UNSIGNED_BYTE, a)
