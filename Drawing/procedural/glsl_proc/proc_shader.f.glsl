@@ -1,5 +1,5 @@
-#version 110
-#extension GL_EXT_gpu_shader4 : enable
+#version 130
+// #extension GL_EXT_gpu_shader4 : enable
 
 // Perlin reference implementation based on the code at
 // http://mrl.nyu.edu/~perlin/noise/

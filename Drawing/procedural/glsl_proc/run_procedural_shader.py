@@ -8,8 +8,8 @@ class ShaderWindow(pyglet.window.Window):
     self.h = 512
 
     # Scaling values
-    self.shift = 0.793
-    self.scale = 0.622
+    self.shift = 1.993
+    self.scale = 0.242
 
     self.windowSize = (float(self.w), float(self.h))
     super(ShaderWindow, self).__init__(caption = 'Shader', width=self.w, height=self.h)
@@ -28,13 +28,13 @@ class ShaderWindow(pyglet.window.Window):
     if symbol == pyglet.window.key.F2:
       self.saveFromShader()
     elif symbol == pyglet.window.key.Q:
-      self.shift += 0.001;
+      self.shift += 0.01;
     elif symbol == pyglet.window.key.A:
-      self.shift -= 0.001;
+      self.shift -= 0.01;
     elif symbol == pyglet.window.key.W:
-      self.scale += 0.001;
+      self.scale += 0.01;
     elif symbol == pyglet.window.key.S:
-      self.scale -= 0.001;
+      self.scale -= 0.01;
     print "shift: {}, scale: {}".format(self.shift, self.scale)
     
 
@@ -94,8 +94,8 @@ class ShaderWindow(pyglet.window.Window):
 
     self.shader.unbind()
 
-if not pyglet.gl.gl_info.have_extension('GL_EXT_gpu_shader4'):
-  raise EnvironmentError("GL_EXT_gpu_shader4 is not supported in this environment, but required by the shader.")
+# if not pyglet.gl.gl_info.have_extension('GL_EXT_gpu_shader4'):
+#   raise EnvironmentError("GL_EXT_gpu_shader4 is not supported in this environment, but required by the shader.")
 
 window = ShaderWindow('proc_shader')
 pyglet.app.run()
