@@ -10,8 +10,8 @@ class ShaderWindow(pyglet.window.Window):
     # Scaling values
     self.x = -5.4
     self.y = -5.4
-    self.zoom = 0.02
     self.z = 0.0
+    self.zoom = 0.02
     self.octives = 9
     self.freq = 0.73
 
@@ -106,7 +106,6 @@ class ShaderWindow(pyglet.window.Window):
     glLoadIdentity()
 
     self.shader.bind()
-    self.shader.uniformf('WindowSize', *self.windowSize)
     self.shader.uniformi('p', *self.p)
     self.shader.uniformf('x', *[self.x])
     self.shader.uniformf('y', *[self.y])
@@ -127,9 +126,6 @@ class ShaderWindow(pyglet.window.Window):
     glEnd()
 
     self.shader.unbind()
-
-# if not pyglet.gl.gl_info.have_extension('GL_EXT_gpu_shader4'):
-#   raise EnvironmentError("GL_EXT_gpu_shader4 is not supported in this environment, but required by the shader.")
 
 window = ShaderWindow('proc_shader')
 pyglet.app.run()

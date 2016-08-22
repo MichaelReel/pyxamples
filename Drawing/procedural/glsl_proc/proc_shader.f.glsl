@@ -1,5 +1,4 @@
 #version 130
-// #extension GL_EXT_gpu_shader4 : enable
 
 // Perlin reference implementation based on the code at
 // http://mrl.nyu.edu/~perlin/noise/
@@ -7,14 +6,13 @@
 #define p_size 512
 #define p_range 256.0
 
-uniform vec2 WindowSize;
 uniform int p[p_size];
-uniform float zoom;
 uniform float x;
 uniform float y;
 uniform float z;
-uniform int octives = 3;
-uniform float freq = 0.6;
+uniform float zoom;
+uniform int octives;
+uniform float freq;
 
 float getSumFreq(float x, float y, float z);
 float getHash(float x, float y, float z); 
