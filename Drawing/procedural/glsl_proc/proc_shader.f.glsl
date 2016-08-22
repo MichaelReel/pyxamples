@@ -14,6 +14,10 @@ uniform float x;
 uniform float y;
 uniform float z;
 
+const int octives = 8;
+const float freq = 0.5;
+
+float getSumFreq(float x, float y, float z);
 float getHash(float x, float y, float z); 
 float fade(float t);
 float lerp(float t, float a, float b);
@@ -23,7 +27,7 @@ void main() {
 
   // getHash is not normalised to 0.0 <-> 1.0
   // it's really somewhere between -1.0 and +1.0
-  float fb = (getHash(
+  float fb = (getSumFreq(
       x + gl_FragCoord[0] * zoom, 
       y + gl_FragCoord[1] * zoom, 
       z
@@ -36,6 +40,16 @@ void main() {
   } else {
     gl_FragColor = vec4(fb, fb, fb, 1.0);
   }
+}
+
+float getSumFreq(float x, float y, float z) {
+  float totalHash = 0;
+  float frequency = freq;
+  for (int oct = 0; oct < octives; oct++) {
+    totalHash += getHash(x * float(oct), y * float(oct), z * float(oct)) * frequency;
+    frequency *= freq;
+  }
+  return totalHash;
 }
 
 float getHash(float x, float y, float z) {
