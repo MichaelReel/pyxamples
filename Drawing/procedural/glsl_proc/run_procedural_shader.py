@@ -8,10 +8,12 @@ class ShaderWindow(pyglet.window.Window):
     self.h = 512
 
     # Scaling values
-    self.x = -7.5
-    self.y = -7.5
-    self.zoom = 0.03
+    self.x = -5.4
+    self.y = -5.4
+    self.zoom = 0.02
     self.z = 0.0
+    self.octives = 9
+    self.freq = 0.73
 
     self.windowSize = (float(self.w), float(self.h))
     super(ShaderWindow, self).__init__(caption = 'Shader', width=self.w, height=self.h)
@@ -45,7 +47,16 @@ class ShaderWindow(pyglet.window.Window):
       self.zoom += 0.01;
     elif symbol == pyglet.window.key.F:
       self.zoom -= 0.01;
-    print "x: {}, y: {}, z: {}, zoom: {}".format(self.x, self.y, self.z, self.zoom)
+    elif symbol == pyglet.window.key.T:
+      self.octives += 1;
+    elif symbol == pyglet.window.key.G:
+      self.octives -= 1;
+    elif symbol == pyglet.window.key.Y:
+      self.freq += 0.01;
+    elif symbol == pyglet.window.key.H:
+      self.freq -= 0.01;
+
+    print "x: {}, y: {}, z: {}, zoom: {}, octs: {}, freq: {}".format(self.x, self.y, self.z, self.zoom, self.octives, self.freq)
     
 
   def saveFromShader(self):
@@ -92,6 +103,8 @@ class ShaderWindow(pyglet.window.Window):
     self.shader.uniformf('y', *[self.y])
     self.shader.uniformf('z', *[self.z])
     self.shader.uniformf('zoom', *[self.zoom])
+    self.shader.uniformi('octives', *[self.octives])
+    self.shader.uniformf('freq', *[self.freq])
 
     glBegin(GL_QUADS)
     glVertex2i(-1, -1)

@@ -13,9 +13,8 @@ uniform float zoom;
 uniform float x;
 uniform float y;
 uniform float z;
-
-const int octives = 8;
-const float freq = 0.5;
+uniform int octives = 3;
+uniform float freq = 0.6;
 
 float getSumFreq(float x, float y, float z);
 float getHash(float x, float y, float z); 
