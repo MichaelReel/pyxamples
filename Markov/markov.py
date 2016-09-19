@@ -38,7 +38,7 @@ class MarkovTable(object):
 
     def readInputStream(self, input, split):
         for line in input.readlines():
-            line = line.strip()
+            line = line.strip().lower()
             self.insertWord(line, split)
 
     def insertWord(self, word, split):
