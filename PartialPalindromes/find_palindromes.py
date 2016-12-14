@@ -1,3 +1,6 @@
+"""
+This just read the dictionary file line by line and prints any palindromes
+"""
 
 INPUT_FILE = "dictionary.txt"
 
