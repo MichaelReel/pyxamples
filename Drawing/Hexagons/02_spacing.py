@@ -37,6 +37,7 @@ class GridDrawer():
         self.screen = pygame.display.set_mode(screen_size)
         self.done = False
         self.init_hexagons(screen_size, hex_size)
+        self.font = pygame.font.Font(None, 20)
 
     def init_hexagons(self, screen_size, radius):
         # Find all the "centers" that will fit on the screen
@@ -80,9 +81,12 @@ class GridDrawer():
 
 
     def draw_hexagons(self):
-        for hex in self.hexagons.values():
-            hex.draw(self.screen)
-        # self.hex.draw(self.screen)
+        for hex in self.hexagons.keys():
+            self.hexagons[hex].draw(self.screen)
+            coord_str = "{}".format(hex)
+            coord_text = self.font.render(coord_str, 0, (255, 127, 255))
+            text_pos = (self.hexagons[hex].center[0] - self.font.size(coord_str)[0] / 2, self.hexagons[hex].center[1] - self.font.size(coord_str)[1] / 2)
+            self.screen.blit(coord_text, text_pos)
 
     def run(self):
         """Draw the screen with a hexagon grid"""
