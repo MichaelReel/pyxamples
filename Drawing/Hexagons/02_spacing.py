@@ -17,7 +17,7 @@ class Hexagon():
 
     def hex_corner(self, i):
         """Get corner"""
-        angle_deg = 60 * i + self.rot
+        angle_deg = 60.0 * i + self.rot
         angle_rad = math.pi / 180 * angle_deg
         return (self.center[0] + self.size * math.cos(angle_rad),
                 self.center[1] + self.size * math.sin(angle_rad))
@@ -55,8 +55,8 @@ class GridDrawer():
         orig_x = screen_size[0] / 2
         orig_y = screen_size[1] / 2
 
-        col_limit = orig_x / width
-        row_limit = orig_y / int(height)
+        col_limit = orig_x / width + 1
+        row_limit = orig_y * 2 / int(height)
 
         coords = {}
 
@@ -73,7 +73,7 @@ class GridDrawer():
     def axial_to_screen((col, row), (width, height), (orig_x, orig_y)):
         x = col * width + orig_x
         y = (row * height + orig_y) + (col * height / 2)
-        return (int(x), int(y))
+        return (x, y)
 
     @staticmethod
     def coords_in_surface((x, y), (width, height)):
@@ -105,5 +105,5 @@ class GridDrawer():
         pygame.quit()
         sys.exit()
 
-drawer = GridDrawer((400, 300), 50)
+drawer = GridDrawer((800, 600), 50)
 drawer.run()
