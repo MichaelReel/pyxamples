@@ -8,16 +8,15 @@ import math
 class Hexagon():
     """Class for drawing a hollow hexagon"""
 
-    def __init__(self, position, radius, color, line = 1, flat = True):
+    def __init__(self, position, radius, color, line = 2):
         self.center = position
         self.size = radius
         self.color = color
         self.line = line
-        self.rot = 0 if flat else 30
 
     def hex_corner(self, i):
         """Get corner"""
-        angle_deg = 60.0 * i + self.rot
+        angle_deg = 60.0 * i
         angle_rad = math.pi / 180 * angle_deg
         return (self.center[0] + self.size * math.cos(angle_rad),
                 self.center[1] + self.size * math.sin(angle_rad))
@@ -42,7 +41,7 @@ class GridDrawer():
     def init_hexagons(self, screen_size, radius):
         # Find all the "centers" that will fit on the screen
         centers = self.centers_visible(screen_size, radius)
-        color = (255, 0, 255)
+        color = (200, 200, 200)
         self.hexagons = {c: Hexagon(centers[c], radius, color) for c in centers.keys()}
 
     @staticmethod
@@ -84,7 +83,7 @@ class GridDrawer():
         for hex in self.hexagons.keys():
             self.hexagons[hex].draw(self.screen)
             coord_str = "{}".format(hex)
-            coord_text = self.font.render(coord_str, 0, (255, 127, 255))
+            coord_text = self.font.render(coord_str, 0, (220, 220, 220))
             text_pos = (self.hexagons[hex].center[0] - self.font.size(coord_str)[0] / 2, self.hexagons[hex].center[1] - self.font.size(coord_str)[1] / 2)
             self.screen.blit(coord_text, text_pos)
 
@@ -98,6 +97,7 @@ class GridDrawer():
                     self.done = True
             
             # Draw
+            self.screen.fill((255,255,255))
             self.draw_hexagons()
             pygame.display.update()
 
